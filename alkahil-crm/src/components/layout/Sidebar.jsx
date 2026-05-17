@@ -8,11 +8,13 @@ import {
   MessageCircle,
   MessageSquare,
   Users,
+  Bot,
   Settings,
   LogOut,
   PanelLeftClose,
   PanelLeft,
 } from 'lucide-react'
+import { aiHandoffQueue } from '../../data/dummyData'
 
 const glass = {
   background: 'rgba(255,255,255,0.14)',
@@ -68,6 +70,7 @@ const nav = [
   { to: '/whatsapp', icon: MessageCircle, label: 'WhatsApp' },
   { to: '/sms', icon: MessageSquare, label: 'SMS' },
   { to: '/leads', icon: Users, label: 'Leads' },
+  { to: '/ai-agent', icon: Bot, label: 'AI Agent', badge: aiHandoffQueue.length },
 ]
 
 export { Logo, UserAvatar }

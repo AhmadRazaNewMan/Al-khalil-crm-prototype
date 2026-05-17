@@ -2,6 +2,33 @@
 // Al Khail CRM - All Dummy Data
 // =============================================
 
+/** TechKhwa Solutions — vendor / integrator (proposal footer) */
+export const companyInfo = {
+  legalName: 'TechKhwa Solutions (Private) Limited',
+  shortName: 'TechKhwa Solutions',
+  website: 'https://techkhwasolutions.com',
+  websiteAlt: 'https://techkhwa.com',
+  phone: '+92 370 5495430',
+  email: 'contact@techkhwasolutions.com',
+  address: {
+    line1: 'Office # 405, Rafay\'s Height Plaza, Abdara Road',
+    line2: 'University Town, Peshawar',
+    postal: '25000',
+    region: 'Khyber Pakhtunkhwa',
+    country: 'Pakistan',
+  },
+  client: 'Al Khail Real Estate',
+  proposalDate: 'May 12, 2026',
+  stack: {
+    backend: 'Node.js + Express.js',
+    database: 'MongoDB + Mongoose',
+    realtime: 'Socket.io',
+    queue: 'BullMQ + Redis',
+    ai: 'OpenAI Whisper + GPT-4o (RAG)',
+    frontend: 'React / React Native',
+  },
+}
+
 export const currentUser = {
   id: 'admin-1',
   name: 'Ahmed Al Mansouri',
@@ -165,3 +192,113 @@ export const properties = [
   { id: 'p3', name: 'Palm Villa 5BR',       price: 'AED 12.5M', floor: 'G+1',  view: 'Sea',          handover: 'Ready',   progress: 100 },
   { id: 'p4', name: 'DIFC Penthouse 4BR',  price: 'AED 8.2M',  floor: '42nd', view: 'City',         handover: 'Q1 2028', progress: 40 },
 ];
+
+// ---- AI RAG Knowledge Base ----
+
+export const knowledgeBaseDocuments = [
+  {
+    id: 'kb1', title: 'Downtown Dubai 3BR — Full Brochure', type: 'property', propertyId: 'p1',
+    size: '2.4 MB', pages: 12, status: 'indexed', chunks: 48,
+    lastUpdated: '2026-05-10', uploadedBy: 'Ahmed Al Mansouri',
+    topics: ['Pricing', 'Payment Plan', 'Floor Plans', 'Handover Date', 'Burj View'],
+  },
+  {
+    id: 'kb2', title: 'JVC 2BR — Floor Plans & Pricing Sheet', type: 'property', propertyId: 'p2',
+    size: '1.8 MB', pages: 8, status: 'indexed', chunks: 32,
+    lastUpdated: '2026-05-08', uploadedBy: 'Fatima Zahra',
+    topics: ['Pricing', 'Floor Plans', 'Amenities', 'Community Map'],
+  },
+  {
+    id: 'kb3', title: 'Palm Villa 5BR — Complete Sales Package', type: 'property', propertyId: 'p3',
+    size: '5.1 MB', pages: 24, status: 'indexed', chunks: 96,
+    lastUpdated: '2026-05-12', uploadedBy: 'Ahmed Al Mansouri',
+    topics: ['Pricing', 'Service Charges', 'Sea View', 'Ready Unit', 'Title Deed'],
+  },
+  {
+    id: 'kb4', title: 'DIFC Penthouse 4BR — Investment Guide', type: 'property', propertyId: 'p4',
+    size: '3.3 MB', pages: 16, status: 'indexed', chunks: 64,
+    lastUpdated: '2026-05-11', uploadedBy: 'Ahmed Al Mansouri',
+    topics: ['Pricing', 'ROI Analysis', 'Payment Plan', 'City View', 'Premium Finish'],
+  },
+  {
+    id: 'kb5', title: 'Al Khail Real Estate — General FAQ', type: 'faq', propertyId: null,
+    size: '0.2 MB', pages: 4, status: 'indexed', chunks: 28,
+    lastUpdated: '2026-05-01', uploadedBy: 'Ahmed Al Mansouri',
+    topics: ['Office Hours', 'Contact Info', 'Mortgage', 'Foreign Ownership', 'Viewing Process'],
+  },
+  {
+    id: 'kb6', title: 'Payment Plans & DLD Registration Fees', type: 'policy', propertyId: null,
+    size: '0.4 MB', pages: 6, status: 'indexed', chunks: 36,
+    lastUpdated: '2026-05-05', uploadedBy: 'Fatima Zahra',
+    topics: ['40/60 Plan', 'Post-Handover', 'DLD 4%', 'Agency Fee', 'Oqood'],
+  },
+  {
+    id: 'kb7', title: 'Service Charges Comparison — All Units', type: 'pricing', propertyId: null,
+    size: '0.1 MB', pages: 2, status: 'indexed', chunks: 12,
+    lastUpdated: '2026-05-09', uploadedBy: 'Ahmed Al Mansouri',
+    topics: ['Service Charge Per SQFT', 'Annual Fees', 'RERA Rates'],
+  },
+  {
+    id: 'kb8', title: 'Dubai Property Market Report Q1 2026', type: 'report', propertyId: null,
+    size: '4.2 MB', pages: 32, status: 'processing', chunks: 0,
+    lastUpdated: '2026-05-14', uploadedBy: 'Ahmed Al Mansouri',
+    topics: [],
+  },
+];
+
+export const aiSessionStats = {
+  totalToday: 42,
+  handedOff: 8,
+  resolved: 34,
+  avgSessionLength: '6m 14s',
+  topicAccuracy: 94.2,
+  totalChunks: 316,
+  documentsIndexed: 7,
+  avgResponseMs: 1240,
+};
+
+export const aiRecentSessions = [
+  { id: 'as1', lead: 'Aisha Karimi',      channel: 'whatsapp', start: '10:10', end: '10:46', messages: 5, outcome: 'handoff',  ragSources: ['kb3', 'kb5'], summary: 'Palm Villa inquiry — service charge question escalated to human.' },
+  { id: 'as2', lead: 'New Lead',           channel: 'whatsapp', start: '09:50', end: '10:02', messages: 4, outcome: 'resolved', ragSources: ['kb1'],         summary: 'General Downtown 3BR availability — brochure sent via RAG.' },
+  { id: 'as3', lead: 'Mohammed Al Zayed', channel: 'sms',      start: '09:15', end: '09:28', messages: 6, outcome: 'handoff',  ragSources: ['kb1', 'kb6', 'kb5'], summary: 'Budget AED 2.5M confirmed — booked Sara for follow-up.' },
+  { id: 'as4', lead: 'Anonymous',          channel: 'whatsapp', start: '08:45', end: '08:51', messages: 3, outcome: 'resolved', ragSources: ['kb5'],         summary: 'Office hours question — FAQ resolved instantly.' },
+  { id: 'as5', lead: 'Carlos Mendez',      channel: 'sms',      start: '08:30', end: '08:52', messages: 7, outcome: 'handoff',  ragSources: ['kb5', 'kb6'], summary: 'Meydan 4BR inquiry — site visit request escalated to human.' },
+  { id: 'as6', lead: 'New Lead',           channel: 'whatsapp', start: '07:55', end: '08:03', messages: 4, outcome: 'resolved', ragSources: ['kb6'],         summary: 'Payment plan structure explained — 40/60 plan details provided.' },
+  { id: 'as7', lead: 'Unknown',            channel: 'sms',      start: '07:30', end: '07:33', messages: 2, outcome: 'resolved', ragSources: ['kb5'],         summary: 'Foreign ownership eligibility question — answered from FAQ.' },
+];
+
+export const aiHandoffQueue = [
+  {
+    id: 'hq1', leadId: 'l4', leadName: 'Aisha Karimi',
+    photo: 'https://randomuser.me/api/portraits/women/33.jpg',
+    channel: 'whatsapp', aiStarted: '10:10', handoffAt: '10:46',
+    assignedTo: null, priority: 'high',
+    aiSummary: 'Lead is interested in Palm Jumeirah 4–5BR villas. Budget confirmed at AED 5M. She asked for the annual service charge on the Palm Villa unit — the AI did not have this specific figure in the knowledge base and escalated. Lead sentiment is positive and purchase intent is HIGH.',
+    qualifiedFields: { budget: 'AED 5M', interest: 'Palm Villa 4–5BR', timeline: 'ASAP', source: 'WhatsApp' },
+    pendingQuestion: 'What is the annual service charge on the Palm Villa?',
+    ragSourcesUsed: ['kb3', 'kb5'],
+    suggestedAgent: 'a1',
+  },
+  {
+    id: 'hq2', leadId: 'l7', leadName: 'Carlos Mendez',
+    photo: 'https://randomuser.me/api/portraits/men/64.jpg',
+    channel: 'sms', aiStarted: '08:30', handoffAt: '08:52',
+    assignedTo: null, priority: 'medium',
+    aiSummary: 'Lead inquired about 4BR units in Meydan. Budget AED 2M. Has been browsing online listings and reached out via SMS. Requested to schedule an on-site visit — AI cannot book visits and escalated. Moderate purchase intent.',
+    qualifiedFields: { budget: 'AED 2M', interest: 'Meydan 4BR', timeline: 'This month', source: 'SMS' },
+    pendingQuestion: 'Can I schedule a site visit this week?',
+    ragSourcesUsed: ['kb5', 'kb6'],
+    suggestedAgent: 'a5',
+  },
+];
+
+export const sampleRagResponse = {
+  query: 'What is the payment plan for Downtown Dubai 3BR?',
+  answer: 'The Downtown Dubai 3BR unit is available on a 40/60 payment plan. You pay 40% during construction and the remaining 60% on handover, which is scheduled for Q4 2027. The unit is currently 65% complete. The listed price is AED 2.45 million. DLD registration fees of 4% apply separately.',
+  sources: [
+    { docId: 'kb1', title: 'Downtown Dubai 3BR — Full Brochure', excerpt: '40/60 payment plan · Handover Q4 2027 · 65% construction complete', relevance: 0.97 },
+    { docId: 'kb6', title: 'Payment Plans & DLD Registration Fees', excerpt: 'DLD fee 4% of property value, payable at time of sale', relevance: 0.88 },
+  ],
+  confidence: 0.95,
+  responseMs: 1180,
+};

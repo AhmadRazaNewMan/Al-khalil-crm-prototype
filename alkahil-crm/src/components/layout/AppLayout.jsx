@@ -24,7 +24,7 @@ const NAV = [
         { heading: 'INTELLIGENCE',
           img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&q=80&auto=format&fit=crop',
           items: [
-            { label:'AI Agent',        desc:'24/7 autonomous fallback',     to:'/dashboard'},
+            { label:'AI Agent & RAG',  desc:'Knowledge base · fallback · handoff', to:'/ai-agent'},
             { label:'AI Transcription',desc:'Whisper-powered call logs',    to:'/calls'    },
           ]},
       ],
@@ -97,7 +97,7 @@ const NAV = [
           img: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?w=400&q=80&auto=format&fit=crop',
           items: [
             { label:'Channel volume', desc:'WhatsApp, calls, SMS, email', to:'/dashboard' },
-            { label:'SLA & response time', desc:'Breaches, percentiles, teams', to:'/calls' },
+            { label:'AI handoff & RAG', desc:'Handoff rates · retrieval accuracy', to:'/ai-agent' },
           ]},
         { heading: 'EXPORT',
           img: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7c3?w=400&q=80&auto=format&fit=crop',
@@ -177,7 +177,7 @@ function MegaDropdown({ nav, onClose }) {
   )
 }
 
-const PAGE_TITLES = { '/dashboard':'Dashboard', '/inbox':'Unified Inbox', '/calls':'Call Logs', '/whatsapp':'WhatsApp', '/sms':'SMS', '/leads':'Leads', '/settings':'Settings' }
+const PAGE_TITLES = { '/dashboard':'Dashboard', '/inbox':'Unified Inbox', '/calls':'Call Logs', '/whatsapp':'WhatsApp', '/sms':'SMS', '/leads':'Leads', '/settings':'Settings', '/ai-agent':'AI Agent & RAG' }
 
 export default function AppLayout({ children, onLogout }) {
   const location  = useLocation()

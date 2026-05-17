@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Eye, EyeOff } from 'lucide-react'
+import CompanyFooter from '../layout/CompanyFooter'
 
 /* ── Cohere-style 3-D organic blob ───────────────────────────── */
 function Blob({ style, color1, color2, size, delay = 0 }) {
@@ -272,6 +273,13 @@ export default function LoginPage({ onLogin }) {
       </motion.div>
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+
+      <div style={{
+        position: 'fixed', bottom: 20, left: '50%', transform: 'translateX(-50%)',
+        zIndex: 10, width: 'min(480px, 92vw)',
+      }}>
+        <CompanyFooter variant="dark" />
+      </div>
     </div>
   )
 }

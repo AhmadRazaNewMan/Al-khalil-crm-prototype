@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Phone, MessageCircle, MessageSquare, Mail, Users, Shield, Bell, Zap, Check, ChevronRight } from 'lucide-react'
-import { agents } from '../../data/dummyData'
+import { Phone, MessageCircle, MessageSquare, Mail, Users, Shield, Bell, Zap, Check, ChevronRight, Bot, ArrowRight } from 'lucide-react'
+import { agents, companyInfo, aiSessionStats, knowledgeBaseDocuments } from '../../data/dummyData'
+import CompanyFooter from '../layout/CompanyFooter'
 
 const AV = ({ name, photo, size=38 }) => {
   const initials = (name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()
@@ -123,9 +125,10 @@ function VoiceSection() {
 }
 
 function AISection() {
+  const navigate = useNavigate()
   const [toggles, setToggles] = useState({
     voice:true, sms:true, whatsapp:true, email:false,
-    transcription:true, sentiment:true, handoff:true,
+    transcription:true, sentiment:true, handoff:true, rag:true,
   })
   const toggle = key => setToggles(t => ({...t, [key]:!t[key]}))
 
@@ -135,12 +138,28 @@ function AISection() {
       <div style={{
         background:'#F8F5FF', border:'1px solid #E9D5FF',
         borderRadius:'12px', padding:'14px 16px', marginBottom:'16px',
-        display:'flex', alignItems:'center', gap:'8px',
+        display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, flexWrap:'wrap',
       }}>
-        <Zap size={14} color='#7670C5'/>
-        <span style={{ fontSize:'13px', color:'#5B21B6' }}>GPT-4o powered · Your OpenAI API key · All calls are async with human fallback</span>
+        <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+          <Zap size={14} color='#7670C5'/>
+          <span style={{ fontSize:'13px', color:'#5B21B6' }}>
+            GPT-4o + Whisper RAG · {aiSessionStats.documentsIndexed} docs · {aiSessionStats.totalChunks} chunks
+          </span>
+        </div>
+        <motion.button
+          whileHover={{ scale:1.02 }} whileTap={{ scale:0.97 }}
+          onClick={() => navigate('/ai-agent')}
+          style={{
+            display:'flex', alignItems:'center', gap:6, padding:'8px 14px', borderRadius:10,
+            border:'none', background:'linear-gradient(135deg,#7670C5,#D18EE2)',
+            color:'#fff', fontSize:12, fontWeight:500, cursor:'pointer', fontFamily:'inherit',
+          }}
+        >
+          <Bot size={14} /> Open AI Agent & RAG <ArrowRight size={12} />
+        </motion.button>
       </div>
       {[
+        { key:'rag',           label:'RAG Knowledge Base', desc:'Retrieval-augmented answers from property docs & FAQ' },
         { key:'voice',         label:'AI Voice Agent',    desc:'Handles inbound calls when agents are offline' },
         { key:'sms',           label:'AI SMS Agent',      desc:'Auto-responds to SMS 24/7'                    },
         { key:'whatsapp',      label:'AI WhatsApp Agent', desc:'First-response bot on WhatsApp'               },
@@ -178,6 +197,7 @@ function AISection() {
           </div>
         </div>
       ))}
+      <CompanyFooter />
     </div>
   )
 }
