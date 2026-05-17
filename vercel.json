@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd alkahil-crm && npm install && npm run build",
+  "outputDirectory": "alkahil-crm/dist",
+  "installCommand": "cd alkahil-crm && npm install",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
