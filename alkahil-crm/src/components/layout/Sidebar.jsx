@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { useId, useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -15,6 +15,7 @@ import {
   PanelLeft,
 } from 'lucide-react'
 import { aiHandoffQueue } from '../../data/dummyData'
+import { brand } from '../../theme'
 
 const glass = {
   background: 'rgba(255,255,255,0.14)',
@@ -63,121 +64,154 @@ const UserAvatar = ({ size = 36 }) => (
   />
 )
 
-const nav = [
-  { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/inbox', icon: Inbox, label: 'Inbox', badge: 18 },
-  { to: '/calls', icon: Phone, label: 'Calls', badge: 7 },
-  { to: '/whatsapp', icon: MessageCircle, label: 'WhatsApp' },
-  { to: '/sms', icon: MessageSquare, label: 'SMS' },
-  { to: '/leads', icon: Users, label: 'Leads' },
-  { to: '/ai-agent', icon: Bot, label: 'AI Agent', badge: aiHandoffQueue.length },
+const navSections = [
+  {
+    title: 'Overview',
+    items: [
+      { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    ],
+  },
+  {
+    title: 'Communication',
+    items: [
+      { to: '/inbox', icon: Inbox, label: 'Inbox', badge: 18 },
+      { to: '/calls', icon: Phone, label: 'Calls', badge: 7 },
+      { to: '/whatsapp', icon: MessageCircle, label: 'WhatsApp' },
+      { to: '/sms', icon: MessageSquare, label: 'SMS' },
+    ],
+  },
+  {
+    title: 'Intelligence',
+    items: [
+      { to: '/ai-agent', icon: Bot, label: 'AI Agent', badge: aiHandoffQueue.length },
+    ],
+  },
+  {
+    title: 'Sales',
+    items: [
+      { to: '/leads', icon: Users, label: 'Leads' },
+    ],
+  },
 ]
 
 export { Logo, UserAvatar }
 
-const ink = 'rgba(255,255,255,0.92)'
-const inkMuted = 'rgba(255,255,255,0.55)'
-const activeBg = 'rgba(255,255,255,0.22)'
-const activeBorder = 'rgba(255,255,255,0.35)'
+const ink = 'rgba(255,255,255,0.94)'
+const inkMuted = 'rgba(255,255,255,0.52)'
 
 function NavRow({ to, icon: Icon, label, badge, collapsed }) {
+  const [hover, setHover] = useState(false)
   return (
     <NavLink to={to} style={{ textDecoration: 'none', display: 'block' }} title={label}>
       {({ isActive }) => (
-        <motion.div
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.98 }}
+        <div
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
           style={{
+            position: 'relative',
             display: 'flex',
             alignItems: 'center',
             justifyContent: collapsed ? 'center' : 'flex-start',
-            gap: collapsed ? 0 : 10,
-            minHeight: 42,
-            padding: collapsed ? '8px 6px' : '8px 12px',
+            gap: collapsed ? 0 : 12,
+            minHeight: 44,
+            padding: collapsed ? '10px 6px' : '10px 14px 10px 16px',
             borderRadius: 12,
-            marginBottom: 4,
+            marginBottom: 6,
             cursor: 'pointer',
-            transition: 'background 0.18s, border-color 0.18s',
-            background: isActive ? activeBg : 'transparent',
-            border: `1px solid ${isActive ? activeBorder : 'transparent'}`,
+            transition: 'background 0.16s ease, transform 0.16s ease',
+            transform: hover && !isActive ? 'translateX(2px)' : 'translateX(0)',
+            background: isActive
+              ? 'rgba(255,255,255,0.97)'
+              : hover ? 'rgba(255,255,255,0.16)' : 'transparent',
+            boxShadow: isActive ? '0 4px 14px rgba(26,22,38,0.16)' : 'none',
           }}
         >
-          <span style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}>
-            <Icon size={18} color={ink} strokeWidth={isActive ? 2.2 : 1.7} style={{ opacity: isActive ? 1 : 0.88 }} />
+          {/* Active indicator bar */}
+          {isActive && !collapsed && (
+            <span style={{
+              position: 'absolute', left: -12, top: '50%', transform: 'translateY(-50%)',
+              width: 4, height: 22, borderRadius: 3, background: brand.gradient,
+            }} />
+          )}
+          <span style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}>
+            <Icon
+              size={19}
+              color={isActive ? brand.primaryDeep : ink}
+              strokeWidth={isActive ? 2.4 : 1.8}
+              style={{ opacity: isActive ? 1 : (hover ? 1 : 0.82) }}
+            />
             {collapsed && badge != null && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: -2,
-                  right: -2,
-                  minWidth: 16,
-                  height: 16,
-                  padding: '0 4px',
-                  borderRadius: 8,
-                  background: 'rgba(255,255,255,0.95)',
-                  color: '#5b52a8',
-                  fontSize: 9,
-                  fontWeight: 800,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '1px solid rgba(255,255,255,0.6)',
-                }}
-              >
+              <span style={{
+                position: 'absolute', top: -4, right: -4,
+                minWidth: 16, height: 16, padding: '0 4px', borderRadius: 8,
+                background: brand.gradient, color: '#fff', fontSize: 9, fontWeight: 800,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                border: '1.5px solid rgba(255,255,255,0.6)',
+              }}>
                 {badge > 9 ? '9+' : badge}
               </span>
             )}
           </span>
           {!collapsed && (
             <>
-              <span
-                style={{
-                  flex: 1,
-                  fontSize: 13,
-                  fontWeight: isActive ? 600 : 500,
-                  color: ink,
-                  letterSpacing: '-0.01em',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  opacity: isActive ? 1 : 0.92,
-                }}
-              >
+              <span style={{
+                flex: 1,
+                fontSize: 13.5,
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? brand.primaryDeep : ink,
+                letterSpacing: '-0.01em',
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                opacity: isActive ? 1 : (hover ? 1 : 0.86),
+              }}>
                 {label}
               </span>
               {badge != null && (
-                <span
-                  style={{
-                    minWidth: 22,
-                    height: 20,
-                    padding: '0 6px',
-                    borderRadius: 10,
-                    background: 'rgba(255,255,255,0.22)',
-                    color: ink,
-                    fontSize: 11,
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    border: '1px solid rgba(255,255,255,0.25)',
-                  }}
-                >
+                <span style={{
+                  minWidth: 22, height: 20, padding: '0 7px', borderRadius: 10,
+                  background: isActive ? brand.gradient : 'rgba(255,255,255,0.20)',
+                  color: '#fff', fontSize: 11, fontWeight: 700,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                  border: `1px solid ${isActive ? 'transparent' : 'rgba(255,255,255,0.22)'}`,
+                }}>
                   {badge > 9 ? '9+' : badge}
                 </span>
               )}
             </>
           )}
-        </motion.div>
+        </div>
       )}
     </NavLink>
   )
 }
 
-export default function Sidebar({ onLogout }) {
-  const [collapsed, setCollapsed] = useState(false)
+function SectionLabel({ children, collapsed }) {
+  if (collapsed) return <div style={{ height: 1, background: 'rgba(255,255,255,0.12)', margin: '10px 8px' }} />
+  return (
+    <div style={{
+      fontSize: 10, fontWeight: 700, letterSpacing: '0.12em',
+      color: inkMuted, padding: '0 14px', marginBottom: 8, textTransform: 'uppercase',
+    }}>
+      {children}
+    </div>
+  )
+}
+
+export default function Sidebar({ onLogout, role = 'admin' }) {
+  const isAgent = role === 'agent'
+  const [collapsed, setCollapsed] = useState(
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches
+  )
   const expandedW = 220
   const collapsedW = 72
+
+  // Auto-collapse on narrow viewports; respects manual toggle within a breakpoint.
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 900px)')
+    const onChange = (e) => setCollapsed(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
 
   return (
     <motion.aside
@@ -275,42 +309,55 @@ export default function Sidebar({ onLogout }) {
         </div>
       )}
 
-      {!collapsed && (
-        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', color: inkMuted, padding: '8px 12px 6px' }}>MENU</div>
-      )}
-
-      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingTop: collapsed ? 4 : 0, overflow: 'auto', overflowX: 'hidden' }}>
-        {nav.map((item) => (
-          <NavRow key={item.to} {...item} collapsed={collapsed} />
+      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingTop: collapsed ? 6 : 10, overflow: 'auto', overflowX: 'hidden' }}>
+        {navSections.map((section, si) => (
+          <div key={section.title} style={{ marginBottom: si < navSections.length - 1 ? 18 : 4 }}>
+            <SectionLabel collapsed={collapsed}>{section.title}</SectionLabel>
+            {section.items.map((item) => (
+              <NavRow key={item.to} {...item} collapsed={collapsed} />
+            ))}
+          </div>
         ))}
       </nav>
 
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.18)', paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <NavLink to="/settings" style={{ textDecoration: 'none', display: 'block' }} title="Settings">
-          {({ isActive }) => (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: collapsed ? 'center' : 'flex-start',
-                gap: collapsed ? 0 : 10,
-                minHeight: 42,
-                padding: collapsed ? '8px 6px' : '8px 12px',
-                borderRadius: 12,
-                cursor: 'pointer',
-                background: isActive ? activeBg : 'transparent',
-                border: `1px solid ${isActive ? activeBorder : 'transparent'}`,
-              }}
-            >
-              <span style={{ width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Settings size={18} color={ink} strokeWidth={1.7} style={{ opacity: isActive ? 1 : 0.88 }} />
-              </span>
-              {!collapsed && (
-                <span style={{ fontSize: 13, fontWeight: isActive ? 600 : 500, color: ink }}>Settings</span>
-              )}
-            </div>
-          )}
-        </NavLink>
+        {!isAgent && (
+          <NavLink to="/settings" style={{ textDecoration: 'none', display: 'block' }} title="Settings">
+            {({ isActive }) => (
+              <div
+                style={{
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: collapsed ? 'center' : 'flex-start',
+                  gap: collapsed ? 0 : 12,
+                  minHeight: 44,
+                  padding: collapsed ? '10px 6px' : '10px 14px 10px 16px',
+                  borderRadius: 12,
+                  cursor: 'pointer',
+                  transition: 'background 0.16s ease',
+                  background: isActive ? 'rgba(255,255,255,0.97)' : 'transparent',
+                  boxShadow: isActive ? '0 4px 14px rgba(26,22,38,0.16)' : 'none',
+                }}
+                onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(255,255,255,0.16)' }}
+                onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent' }}
+              >
+                {isActive && !collapsed && (
+                  <span style={{
+                    position: 'absolute', left: -12, top: '50%', transform: 'translateY(-50%)',
+                    width: 4, height: 22, borderRadius: 3, background: brand.gradient,
+                  }} />
+                )}
+                <span style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Settings size={19} color={isActive ? brand.primaryDeep : ink} strokeWidth={isActive ? 2.4 : 1.8} style={{ opacity: isActive ? 1 : 0.82 }} />
+                </span>
+                {!collapsed && (
+                  <span style={{ fontSize: 13.5, fontWeight: isActive ? 700 : 500, color: isActive ? brand.primaryDeep : ink, opacity: isActive ? 1 : 0.86 }}>Settings</span>
+                )}
+              </div>
+            )}
+          </NavLink>
+        )}
         <div
           onClick={onLogout}
           role="button"
@@ -354,7 +401,7 @@ export default function Sidebar({ onLogout }) {
             <div style={{ minWidth: 0, flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 }}>
               <div style={{ minWidth: 0 }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: ink }}>Ahmed</div>
-                <div style={{ fontSize: 11, color: inkMuted }}>Agent</div>
+                <div style={{ fontSize: 11, color: inkMuted, textTransform: 'capitalize' }}>{role}</div>
               </div>
               <ChevronMini />
             </div>

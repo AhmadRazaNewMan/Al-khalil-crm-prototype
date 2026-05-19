@@ -126,7 +126,7 @@ export default function CallLogs() {
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
         <div>
           <h1 style={{ fontSize:22, fontWeight:600, color:'#000', margin:0 }}>Call Logs</h1>
-          <p style={{ fontSize:13, color:'#888', marginTop:4, margin:0 }}>3CX PBX integration · All calls with AI transcription</p>
+          <p style={{ fontSize:13.5, fontWeight:500, color:'#4A4658', marginTop:4, margin:0 }}>3CX PBX integration · All calls with AI transcription</p>
         </div>
         <button style={{ padding:'8px 16px', borderRadius:8, background:'#fff', border:'1px solid #E5E7EB', color:'#555', fontSize:13, cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', gap:6 }}>
           <Download size={13}/> Export
@@ -173,8 +173,14 @@ export default function CallLogs() {
 
       {/* Table */}
       <div style={{ background:'#fff', border:'1px solid #E5E7EB', borderRadius:12, overflow:'hidden' }}>
-        <div style={{ display:'grid', gridTemplateColumns:'2fr 1.5fr 1fr 1fr 1fr 1fr auto', padding:'10px 18px', fontSize:10, color:'#AAA', fontWeight:600, textTransform:'uppercase', letterSpacing:'.05em', borderBottom:'1px solid #F0F0F0' }}>
-          <span>Lead</span><span>Agent</span><span>Direction</span><span>Status</span><span>Duration</span><span>Time</span><span>Actions</span>
+        <div style={{ display:'grid', gridTemplateColumns:'2fr 1.5fr 1fr 1fr 1fr 1fr 1.4fr', padding:'12px 18px', fontSize:10, color:'#6E6982', fontWeight:700, textTransform:'uppercase', letterSpacing:'.06em', borderBottom:'1px solid #E7E4F0', background:'#FAF9FE' }}>
+          <span style={{ textAlign:'left' }}>Lead</span>
+          <span style={{ textAlign:'left' }}>Agent</span>
+          <span style={{ textAlign:'center' }}>Direction</span>
+          <span style={{ textAlign:'center' }}>Status</span>
+          <span style={{ textAlign:'center' }}>Duration</span>
+          <span style={{ textAlign:'center' }}>Time</span>
+          <span style={{ textAlign:'right' }}>Actions</span>
         </div>
         {filtered.map((call,i) => {
           const isExpanded = expanded === call.id
@@ -185,33 +191,35 @@ export default function CallLogs() {
             <div key={call.id}>
               <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:i*0.03 }}
                 onClick={()=>setExpanded(isExpanded ? null : call.id)}
-                style={{ display:'grid', gridTemplateColumns:'2fr 1.5fr 1fr 1fr 1fr 1fr auto', padding:'13px 18px', borderBottom:'1px solid #F8F8F8', alignItems:'center', cursor:'pointer', transition:'background 0.12s' }}
-                onMouseEnter={e=>e.currentTarget.style.background='#FAFAFA'}
+                style={{ display:'grid', gridTemplateColumns:'2fr 1.5fr 1fr 1fr 1fr 1fr 1.4fr', padding:'13px 18px', borderBottom:'1px solid #F1EFF7', alignItems:'center', cursor:'pointer', transition:'background 0.12s' }}
+                onMouseEnter={e=>e.currentTarget.style.background='#FAF9FE'}
                 onMouseLeave={e=>e.currentTarget.style.background='transparent'}
               >
-                <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <div style={{ display:'flex', alignItems:'center', gap:10, minWidth:0 }}>
                   <PA photo={leadPhotos[call.lead]} name={call.lead} size={34}/>
-                  <div>
-                    <div style={{ fontSize:13, fontWeight:500, color:'#000' }}>{call.lead}</div>
-                    <div style={{ fontSize:10, color:'#AAA' }}>{call.phone}</div>
+                  <div style={{ minWidth:0 }}>
+                    <div style={{ fontSize:13, fontWeight:600, color:'#1A1626' }}>{call.lead}</div>
+                    <div style={{ fontSize:10.5, color:'#9A95AC' }}>{call.phone}</div>
                   </div>
                 </div>
-                <div>
-                  <div style={{ fontSize:13, color:'#333' }}>{call.agent}</div>
-                  <div style={{ fontSize:10, color:'#AAA' }}>Ext {call.ext}</div>
+                <div style={{ minWidth:0 }}>
+                  <div style={{ fontSize:13, fontWeight:500, color:'#1A1626' }}>{call.agent}</div>
+                  <div style={{ fontSize:10.5, color:'#9A95AC' }}>Ext {call.ext}</div>
                 </div>
-                {/* Direction — same purple icon for all */}
-                <div style={{ display:'flex', alignItems:'center', gap:5 }}>
-                  <DirIcon size={12} color='#7670C5'/>
-                  <span style={{ fontSize:12, color:'#555', textTransform:'capitalize' }}>{call.direction}</span>
+                {/* Direction */}
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:5 }}>
+                  <DirIcon size={12} color='#6C5CE0'/>
+                  <span style={{ fontSize:12, color:'#54506A', textTransform:'capitalize' }}>{call.direction}</span>
                 </div>
-                {/* Status — uniform gray pill */}
-                <span style={{ fontSize:11, padding:'3px 9px', borderRadius:20, background:'#F5F3F0', color:'#555', border:'1px solid #E8E3DC', display:'inline-block' }}>{statusLabel}</span>
-                <div style={{ fontSize:12, color:'#555', display:'flex', alignItems:'center', gap:4 }}>
-                  <Clock size={10} color='#CCC'/>{call.duration}
+                {/* Status */}
+                <div style={{ display:'flex', justifyContent:'center' }}>
+                  <span style={{ fontSize:11, fontWeight:600, padding:'3px 10px', borderRadius:20, background:'#F5F3F0', color:'#54506A', border:'1px solid #E8E3DC' }}>{statusLabel}</span>
                 </div>
-                <div style={{ fontSize:11, color:'#AAA' }}>{call.time.split(' ')[1]||call.time}</div>
-                <div style={{ display:'flex', gap:5, alignItems:'center' }}>
+                <div style={{ fontSize:12, color:'#54506A', display:'flex', alignItems:'center', justifyContent:'center', gap:4 }}>
+                  <Clock size={10} color='#9A95AC'/>{call.duration}
+                </div>
+                <div style={{ fontSize:11, color:'#6E6982', textAlign:'center' }}>{call.time.split(' ')[1]||call.time}</div>
+                <div style={{ display:'flex', gap:5, alignItems:'center', justifyContent:'flex-end' }}>
                   {call.hasRecording && (
                     <button onClick={e=>e.stopPropagation()} style={{ padding:'4px 10px', borderRadius:7, fontSize:11, background:'#F3F2FF', border:'1px solid #E8E3DC', color:'#7670C5', cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', gap:3 }}>
                       <Play size={9}/>Play

@@ -1,19 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;650;700;750&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --accent: #7670C5;
-  --accent-2: #D18EE2;
+  --accent: #6C5CE0;
+  --accent-deep: #5A49C9;
+  --accent-2: #C77BDB;
   --accent-coral: #FF7759;
-  --blue: #4C6EE6;
-  --success: #5EA538;
-  --error: #CA492D;
-  --border: #E5E7EB;
-  --text: #000;
-  --text-muted: #888;
-  --bg: #FAFAFA;
-  --surface: #fff;
+  --blue: #3D63D8;
+  --success: #3F9B2F;
+  --error: #C53B28;
+  --border: #E7E4F0;
+  --text: #1A1626;
+  --text-muted: #6E6982;
+  --bg: #FAF9FE;
+  --surface: #FFFFFF;
 }
 
 html, body, #root { height: 100%; }
@@ -25,14 +26,51 @@ body {
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Accessibility — visible keyboard focus on every interactive element.
+   Mouse clicks stay clean (:focus-visible only). */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(108,92,224,0.34);
+  border-radius: 6px;
+}
+button, a, input, [role="button"], [tabindex] { outline: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #F5F5F5; }
-::-webkit-scrollbar-thumb { background: #DDD; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #BBB; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D6D1E6; border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: #BBB4D4; background-clip: content-box; }
 
 /* Keyframes */
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── Responsive structural helpers (inline styles can't do media queries) ── */
+
+/* KPI grid: 6 cols desktop → 3 tablet → 2 mobile */
+.kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+@media (max-width: 1180px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 680px)  { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* Dashboard two-column → stack on tablet */
+.dash-cols { display: grid; grid-template-columns: 1.45fr 1fr; gap: 18px; }
+@media (max-width: 1000px) { .dash-cols { grid-template-columns: 1fr; } }
+
+/* Generic responsive table wrapper */
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Hide on small screens */
+@media (max-width: 760px) { .hide-sm { display: none !important; } }
+
+/* App shell padding shrinks on small screens */
+.app-main { padding: 28px 32px; }
+@media (max-width: 760px) { .app-main { padding: 18px 16px; } }
+
+/* Topbar nav links collapse below tablet */
+@media (max-width: 900px) { .topbar-nav { display: none !important; } }

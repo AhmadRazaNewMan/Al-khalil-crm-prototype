@@ -158,7 +158,7 @@ export default function WhatsAppModule() {
               Baileys Engine
             </span>
           </div>
-          <p style={{ fontSize:'13px', color:'#888' }}>Server-side WhatsApp sessions via QR linking · Each agent uses their company SIM</p>
+          <p style={{ fontSize:'13.5px', fontWeight:500, color:'#4A4658' }}>Server-side WhatsApp sessions via QR linking · Each agent uses their company SIM</p>
         </div>
         {/* CTA — black pill like rest of app */}
         <motion.button whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }}

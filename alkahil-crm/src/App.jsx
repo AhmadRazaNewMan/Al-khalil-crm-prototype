@@ -14,15 +14,23 @@ import AIAgentPage from './components/ai/AIAgentPage'
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [role, setRole] = useState('admin')
+
+  const handleLogin = (r = 'admin') => {
+    setRole(r === 'agent' ? 'agent' : 'admin')
+    setIsAuthenticated(true)
+  }
+
+  const isAgent = role === 'agent'
 
   return (
     <div style={{ minHeight: '100%', position: 'relative' }}>
       <AppBackground />
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh' }}>
         {!isAuthenticated ? (
-          <LoginPage onLogin={() => setIsAuthenticated(true)} />
+          <LoginPage onLogin={handleLogin} />
         ) : (
-          <AppLayout onLogout={() => setIsAuthenticated(false)}>
+          <AppLayout role={role} onLogout={() => setIsAuthenticated(false)}>
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -31,7 +39,10 @@ export default function App() {
               <Route path="/whatsapp" element={<WhatsAppModule />} />
               <Route path="/sms" element={<SMSModule />} />
               <Route path="/leads" element={<LeadsPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
+              <Route
+                path="/settings"
+                element={isAgent ? <Navigate to="/dashboard" replace /> : <SettingsPage />}
+              />
               <Route path="/ai-agent" element={<AIAgentPage />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>

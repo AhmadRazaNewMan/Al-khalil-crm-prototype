@@ -1,7 +1,22 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff } from 'lucide-react'
-import CompanyFooter from '../layout/CompanyFooter'
+import { Eye, EyeOff, ArrowRight } from 'lucide-react'
+import { brand, ink, elevation } from '../../theme'
+
+/* Brand-accurate SSO marks */
+const GoogleIcon = () => (
+  <svg width="17" height="17" viewBox="0 0 18 18" aria-hidden>
+    <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.71-1.57 2.68-3.89 2.68-6.62z"/>
+    <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/>
+    <path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"/>
+    <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/>
+  </svg>
+)
+const GithubIcon = () => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill={ink.text} aria-hidden>
+    <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.25 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/>
+  </svg>
+)
 
 /* ── Cohere-style 3-D organic blob ───────────────────────────── */
 function Blob({ style, color1, color2, size, delay = 0 }) {
@@ -75,10 +90,17 @@ export default function LoginPage({ onLogin }) {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 11, fontWeight: 700, color: '#fff',
         }}>AK</div>
-        <span style={{ fontSize: 15, fontWeight: 600, color: '#000', letterSpacing: '-0.01em' }}>Al Khail CRM</span>
+        <span style={{ fontSize: 15, fontWeight: 700, color: '#fff', letterSpacing: '-0.015em', textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>Al Khail CRM</span>
       </div>
-      <div style={{ position: 'fixed', top: 24, right: 36, zIndex: 10 }}>
-        <span style={{ fontSize: 14, color: '#555', cursor: 'pointer' }}>Sign Up</span>
+      <div style={{ position: 'fixed', top: 24, right: 36, zIndex: 10, display: 'flex', alignItems: 'center', gap: 7 }}>
+        <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>New here?</span>
+        <span style={{
+          fontSize: 13, fontWeight: 700, color: '#fff', cursor: 'pointer',
+          padding: '6px 14px', borderRadius: 9999,
+          background: 'rgba(255,255,255,0.14)',
+          border: '1px solid rgba(255,255,255,0.28)',
+          backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+        }}>Sign up</span>
       </div>
 
       {/* Soft blobs on top of global ambient (low opacity so art + grain stay primary) */}
@@ -116,39 +138,13 @@ export default function LoginPage({ onLogin }) {
         }}
       >
         <h1 style={{
-          fontSize: 28, fontWeight: 600, color: '#000',
-          textAlign: 'center', marginBottom: 28, letterSpacing: '-0.02em',
-        }}>Log in</h1>
-
-        {/* SSO buttons */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-          {[
-            { label: 'Continue with Google',  icon: 'G', iconColor: '#4285F4' },
-            { label: 'Continue with Github',  icon: '◎', iconColor: '#000'    },
-          ].map((b, i) => (
-            <button key={i} onClick={onLogin} style={{
-              flex: 1, height: 44, borderRadius: 6,
-              border: '1px solid #E5E7EB', background: '#fff',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              gap: 8, cursor: 'pointer', fontSize: 13,
-              color: '#000', fontFamily: 'inherit',
-              transition: 'background 0.15s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = '#F5F5F5'}
-            onMouseLeave={e => e.currentTarget.style.background = '#fff'}
-            >
-              <span style={{ fontSize: b.icon === 'G' ? 14 : 16, color: b.iconColor, fontWeight: 700 }}>{b.icon}</span>
-              {b.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Divider */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-          <div style={{ flex: 1, height: 1, background: '#E5E7EB' }} />
-          <span style={{ fontSize: 12, color: '#999' }}>or</span>
-          <div style={{ flex: 1, height: 1, background: '#E5E7EB' }} />
-        </div>
+          fontSize: 28, fontWeight: 700, color: ink.text,
+          textAlign: 'center', marginBottom: 6, letterSpacing: '-0.025em',
+        }}>Welcome back</h1>
+        <p style={{
+          fontSize: 14, fontWeight: 500, color: ink.textSecondary,
+          textAlign: 'center', marginBottom: 26,
+        }}>Sign in to your Al Khail CRM workspace</p>
 
         <form onSubmit={handleSubmit}>
           {/* Email */}
@@ -199,87 +195,116 @@ export default function LoginPage({ onLogin }) {
           </div>
 
           {/* Forgot */}
-          <div style={{ textAlign: 'right', marginTop: 8, marginBottom: 20 }}>
-            <span style={{ fontSize: 13, color: '#555', cursor: 'pointer', textDecoration: 'underline' }}>
-              Forgot Password
+          <div style={{ textAlign: 'right', marginTop: 10, marginBottom: 20 }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: brand.primaryDeep, cursor: 'pointer' }}>
+              Forgot password?
             </span>
           </div>
 
-          {/* Submit */}
+          {/* Submit — primary brand CTA */}
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
+            whileHover={{ scale: 1.015, boxShadow: '0 12px 30px rgba(108,92,224,0.4)' }}
+            whileTap={{ scale: 0.985 }}
             disabled={loading}
             style={{
-              width: '100%', height: 48,
-              background: loading ? '#555' : '#000',
+              width: '100%', height: 50,
+              background: loading ? brand.primaryDeep : brand.gradient,
               color: '#fff', border: 'none',
-              borderRadius: 9999, fontSize: 14,
+              borderRadius: 9999, fontSize: 15,
               cursor: loading ? 'wait' : 'pointer',
-              fontFamily: 'inherit', fontWeight: 500,
+              fontFamily: 'inherit', fontWeight: 600,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+              boxShadow: elevation.brandGlow,
               transition: 'background 0.2s',
             }}
           >
             {loading ? (
               <>
                 <div style={{
-                  width: 14, height: 14, borderRadius: '50%',
-                  border: '2px solid rgba(255,255,255,0.3)',
+                  width: 15, height: 15, borderRadius: '50%',
+                  border: '2px solid rgba(255,255,255,0.35)',
                   borderTopColor: '#fff',
                   animation: 'spin 0.7s linear infinite',
                 }} />
                 Signing in...
               </>
             ) : (
-              <>Log in <span style={{ fontSize: 16 }}>→</span></>
+              <>Sign in <ArrowRight size={17} strokeWidth={2.4} /></>
             )}
           </motion.button>
         </form>
 
-        <p style={{ textAlign: 'center', fontSize: 12, color: '#888', marginTop: 20, lineHeight: 1.6 }}>
-          By signing up, you agree to the{' '}
-          <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Terms of Use</span>
+        {/* Divider — SSO now below the primary action */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '24px 0 18px' }}>
+          <div style={{ flex: 1, height: 1, background: ink.border }} />
+          <span style={{ fontSize: 12, fontWeight: 500, color: ink.textMuted }}>or continue with</span>
+          <div style={{ flex: 1, height: 1, background: ink.border }} />
+        </div>
+
+        {/* SSO buttons */}
+        <div style={{ display: 'flex', gap: 12 }}>
+          {[
+            { label: 'Google', Icon: GoogleIcon },
+            { label: 'GitHub', Icon: GithubIcon },
+          ].map((b, i) => (
+            <button key={i} onClick={() => onLogin('admin')} style={{
+              flex: 1, height: 46, borderRadius: 10,
+              border: `1px solid ${ink.borderStrong}`, background: ink.surface,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              gap: 9, cursor: 'pointer', fontSize: 13.5, fontWeight: 600,
+              color: ink.text, fontFamily: 'inherit',
+              transition: 'background 0.15s, border-color 0.15s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = brand.primarySoft; e.currentTarget.style.borderColor = brand.primarySoftBorder }}
+              onMouseLeave={e => { e.currentTarget.style.background = ink.surface; e.currentTarget.style.borderColor = ink.borderStrong }}
+            >
+              <b.Icon />
+              {b.label}
+            </button>
+          ))}
+        </div>
+
+        <p style={{ textAlign: 'center', fontSize: 12.5, color: ink.textMuted, marginTop: 22, lineHeight: 1.6 }}>
+          By signing in, you agree to the{' '}
+          <span style={{ color: ink.textSecondary, fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }}>Terms of Use</span>
           {' '}and{' '}
-          <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Privacy Policy</span>.
+          <span style={{ color: ink.textSecondary, fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }}>Privacy Policy</span>.
         </p>
 
-        <p style={{ textAlign: 'center', fontSize: 13, color: '#555', marginTop: 16 }}>
-          New user?{' '}
-          <span style={{ fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }}>Sign up</span>
+        <p style={{ textAlign: 'center', fontSize: 13, color: ink.textSecondary, marginTop: 14 }}>
+          New to Al Khail?{' '}
+          <span style={{ fontWeight: 700, color: brand.primaryDeep, cursor: 'pointer' }}>Create an account</span>
         </p>
 
         {/* Demo shortcut */}
         <div style={{
           marginTop: 20, paddingTop: 16,
-          borderTop: '1px solid #F0F0F0',
-          display: 'flex', justifyContent: 'center', gap: 8,
+          borderTop: `1px solid ${ink.border}`,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
         }}>
-          {['Admin', 'Supervisor', 'Agent'].map(role => (
-            <button key={role} onClick={onLogin} style={{
-              padding: '6px 16px', borderRadius: 20, fontSize: 12,
-              border: '1px solid #E5E7EB', background: 'transparent',
-              color: '#555', cursor: 'pointer', fontFamily: 'inherit',
-              transition: 'all 0.15s',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#000'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#000'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#555'; e.currentTarget.style.borderColor = '#E5E7EB'; }}
-            >
-              {role}
-            </button>
-          ))}
+          <span style={{ fontSize: 11, fontWeight: 600, color: ink.textMuted, letterSpacing: '0.04em' }}>
+            QUICK DEMO ACCESS
+          </span>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 10 }}>
+            {['Admin', 'Agent'].map(r => (
+              <button key={r} onClick={() => onLogin(r.toLowerCase())} style={{
+                padding: '8px 22px', borderRadius: 20, fontSize: 12.5, fontWeight: 600,
+                border: `1px solid ${ink.borderStrong}`, background: 'transparent',
+                color: ink.textSecondary, cursor: 'pointer', fontFamily: 'inherit',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = brand.primary; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = brand.primary; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = ink.textSecondary; e.currentTarget.style.borderColor = ink.borderStrong; }}
+              >
+                {r}
+              </button>
+            ))}
+          </div>
         </div>
       </motion.div>
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-
-      <div style={{
-        position: 'fixed', bottom: 20, left: '50%', transform: 'translateX(-50%)',
-        zIndex: 10, width: 'min(480px, 92vw)',
-      }}>
-        <CompanyFooter variant="dark" />
-      </div>
     </div>
   )
 }

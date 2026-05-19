@@ -2,7 +2,208 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Sidebar, { Logo, UserAvatar } from './Sidebar'
-import { Search, Bell, ChevronDown } from 'lucide-react'
+import {
+  Search, Bell, ChevronDown, SlidersHorizontal, Settings, LogOut,
+  UserCircle, Check, Phone, MessageCircle, Mail, Zap,
+} from 'lucide-react'
+import { recentActivity } from '../../data/dummyData'
+import { brand, ink, semantic, elevation, radius, type } from '../../theme'
+
+const notifIcon = { call: Phone, whatsapp: MessageCircle, sms: MessageCircle, email: Mail, ai: Zap }
+
+function MenuShell({ children, width = 320, align = 'right' }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -8, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -8, scale: 0.98 }}
+      transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        position: 'absolute', top: 'calc(100% + 10px)',
+        [align]: 0, width,
+        background: ink.surface, border: `1px solid ${ink.border}`,
+        borderRadius: radius.lg, boxShadow: elevation.pop,
+        zIndex: 300, overflow: 'hidden',
+      }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+function NotificationMenu({ onClose }) {
+  const unread = 3
+  return (
+    <MenuShell width={340}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '14px 16px', borderBottom: `1px solid ${ink.border}`,
+      }}>
+        <span style={{ ...type.cardTitle, color: ink.text }}>Notifications</span>
+        <span style={{
+          fontSize: 11, fontWeight: 700, color: '#fff', background: brand.primary,
+          padding: '2px 8px', borderRadius: 999,
+        }}>{unread} new</span>
+      </div>
+      <div style={{ maxHeight: 360, overflowY: 'auto' }}>
+        {recentActivity.map((a, i) => {
+          const Icon = notifIcon[a.type] || Bell
+          return (
+            <div key={a.id} style={{
+              display: 'flex', gap: 12, padding: '12px 16px',
+              borderBottom: i < recentActivity.length - 1 ? `1px solid ${ink.border}` : 'none',
+              background: i < unread ? brand.primarySoft : 'transparent',
+              cursor: 'pointer', transition: 'background 0.15s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = ink.row}
+              onMouseLeave={e => e.currentTarget.style.background = i < unread ? brand.primarySoft : 'transparent'}
+            >
+              <div style={{
+                width: 30, height: 30, borderRadius: 9, flexShrink: 0,
+                background: ink.surface, border: `1px solid ${ink.border}`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <Icon size={13} color={brand.primary} strokeWidth={2} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 12.5, color: ink.text, lineHeight: 1.4 }}>{a.text}</div>
+                <div style={{ fontSize: 11, color: ink.textMuted, marginTop: 2 }}>{a.agent} · {a.time}</div>
+              </div>
+              {i < unread && <div style={{ width: 7, height: 7, borderRadius: '50%', background: brand.primary, flexShrink: 0, marginTop: 5 }} />}
+            </div>
+          )
+        })}
+      </div>
+      <button
+        onClick={onClose}
+        style={{
+          width: '100%', padding: '12px', border: 'none', borderTop: `1px solid ${ink.border}`,
+          background: ink.surface, color: brand.primaryDeep, fontSize: 12.5, fontWeight: 600,
+          cursor: 'pointer', fontFamily: 'inherit',
+        }}
+      >
+        Mark all as read
+      </button>
+    </MenuShell>
+  )
+}
+
+function FilterMenu() {
+  const groups = [
+    { label: 'Date range', opts: ['Today', 'This week', 'This month', 'Custom'], def: 'Today' },
+    { label: 'Team', opts: ['All teams', 'Sales', 'Support', 'AI'], def: 'All teams' },
+    { label: 'Status', opts: ['All', 'Active', 'Pending', 'Closed'], def: 'All' },
+  ]
+  const [sel, setSel] = useState(Object.fromEntries(groups.map(g => [g.label, g.def])))
+  return (
+    <MenuShell width={300}>
+      <div style={{ padding: '14px 16px', borderBottom: `1px solid ${ink.border}` }}>
+        <span style={{ ...type.cardTitle, color: ink.text }}>Filters</span>
+      </div>
+      <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {groups.map(g => (
+          <div key={g.label}>
+            <div style={{ ...type.label, color: ink.textMuted, marginBottom: 8 }}>{g.label}</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {g.opts.map(o => {
+                const active = sel[g.label] === o
+                return (
+                  <button
+                    key={o}
+                    onClick={() => setSel(s => ({ ...s, [g.label]: o }))}
+                    style={{
+                      padding: '6px 12px', borderRadius: 999, fontSize: 12, fontWeight: 600,
+                      fontFamily: 'inherit', cursor: 'pointer',
+                      border: `1px solid ${active ? 'transparent' : ink.border}`,
+                      background: active ? brand.primary : ink.surface,
+                      color: active ? '#fff' : ink.textSecondary,
+                      transition: 'all 0.14s',
+                    }}
+                  >
+                    {o}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: 'flex', gap: 8, padding: '12px 16px', borderTop: `1px solid ${ink.border}` }}>
+        <button
+          onClick={() => setSel(Object.fromEntries(groups.map(g => [g.label, g.def])))}
+          style={{
+            flex: 1, padding: '9px', borderRadius: radius.sm, fontFamily: 'inherit',
+            border: `1px solid ${ink.borderStrong}`, background: ink.surface,
+            color: ink.textSecondary, fontSize: 12.5, fontWeight: 600, cursor: 'pointer',
+          }}
+        >
+          Reset
+        </button>
+        <button style={{
+          flex: 1, padding: '9px', borderRadius: radius.sm, border: 'none',
+          background: brand.gradient, color: '#fff', fontSize: 12.5, fontWeight: 600,
+          cursor: 'pointer', fontFamily: 'inherit',
+        }}>
+          Apply
+        </button>
+      </div>
+    </MenuShell>
+  )
+}
+
+function ProfileMenu({ onLogout, onNavigate, role = 'admin' }) {
+  const isAgent = role === 'agent'
+  const rows = isAgent
+    ? [{ label: 'My profile', icon: UserCircle, action: () => onNavigate('/dashboard') }]
+    : [
+        { label: 'My account', icon: UserCircle, action: () => onNavigate('/settings') },
+        { label: 'Settings', icon: Settings, action: () => onNavigate('/settings') },
+      ]
+  return (
+    <MenuShell width={240}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px', borderBottom: `1px solid ${ink.border}` }}>
+        <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Ahmed"
+          style={{ width: 40, height: 40, borderRadius: 11, objectFit: 'cover' }} />
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: 13.5, fontWeight: 700, color: ink.text }}>Ahmed Al Mansouri</div>
+          <div style={{ fontSize: 11.5, color: ink.textMuted, textTransform: 'capitalize' }}>{role} · ahmed@alkhailre.ae</div>
+        </div>
+      </div>
+      <div style={{ padding: 6 }}>
+        {rows.map(r => (
+          <button key={r.label} onClick={r.action} style={{
+            width: '100%', display: 'flex', alignItems: 'center', gap: 10,
+            padding: '10px 12px', borderRadius: radius.sm, border: 'none',
+            background: 'transparent', color: ink.textSecondary, fontSize: 13,
+            fontWeight: 550, fontFamily: 'inherit', cursor: 'pointer', textAlign: 'left',
+            transition: 'background 0.14s',
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = brand.primarySoft}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <r.icon size={15} color={ink.textMuted} />
+            {r.label}
+          </button>
+        ))}
+      </div>
+      <div style={{ padding: 6, borderTop: `1px solid ${ink.border}` }}>
+        <button onClick={onLogout} style={{
+          width: '100%', display: 'flex', alignItems: 'center', gap: 10,
+          padding: '10px 12px', borderRadius: radius.sm, border: 'none',
+          background: 'transparent', color: semantic.danger, fontSize: 13,
+          fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer', textAlign: 'left',
+          transition: 'background 0.14s',
+        }}
+          onMouseEnter={e => e.currentTarget.style.background = semantic.dangerSoft}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+        >
+          <LogOut size={15} />
+          Sign out
+        </button>
+      </div>
+    </MenuShell>
+  )
+}
 
 const NAV = [
   {
@@ -100,7 +301,7 @@ const NAV = [
             { label:'AI handoff & RAG', desc:'Handoff rates · retrieval accuracy', to:'/ai-agent' },
           ]},
         { heading: 'EXPORT',
-          img: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7c3?w=400&q=80&auto=format&fit=crop',
+          img: 'https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=400&q=80&auto=format&fit=crop',
           items: [
             { label:'Scheduled reports', desc:'Email PDFs on a cadence', to:'/settings' },
             { label:'Download center', desc:'CSV, XLSX, and audit trails', to:'/dashboard' },
@@ -113,18 +314,27 @@ const NAV = [
 
 function DropImg({ src }) {
   const [hovered, setHovered] = useState(false)
+  const [failed, setFailed] = useState(false)
   return (
-    <div style={{ height:88, borderRadius:10, marginBottom:12, overflow:'hidden', flexShrink:0 }}>
-      <img
-        src={src} alt=""
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        style={{
-          width:'100%', height:'100%', objectFit:'cover', display:'block',
-          transition:'transform 0.35s ease',
-          transform: hovered ? 'scale(1.08)' : 'scale(1)',
-        }}
-      />
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        height:88, borderRadius:10, marginBottom:12, overflow:'hidden', flexShrink:0,
+        background: brand.gradient,
+      }}
+    >
+      {!failed && (
+        <img
+          src={src} alt=""
+          onError={() => setFailed(true)}
+          style={{
+            width:'100%', height:'100%', objectFit:'cover', display:'block',
+            transition:'transform 0.35s ease',
+            transform: hovered ? 'scale(1.08)' : 'scale(1)',
+          }}
+        />
+      )}
     </div>
   )
 }
@@ -179,13 +389,17 @@ function MegaDropdown({ nav, onClose }) {
 
 const PAGE_TITLES = { '/dashboard':'Dashboard', '/inbox':'Unified Inbox', '/calls':'Call Logs', '/whatsapp':'WhatsApp', '/sms':'SMS', '/leads':'Leads', '/settings':'Settings', '/ai-agent':'AI Agent & RAG' }
 
-export default function AppLayout({ children, onLogout }) {
+export default function AppLayout({ children, onLogout, role = 'admin' }) {
   const location  = useLocation()
   const navigate  = useNavigate()
   const [open, setOpen]         = useState(null)
   const [searchFocus, setSF]    = useState(false)
+  const [menu, setMenu]         = useState(null) // 'notif' | 'filter' | 'profile'
   const mainRef = useRef(null)
   const [headerGlass, setHeaderGlass] = useState(false)
+
+  const toggleMenu = (m) => setMenu(cur => (cur === m ? null : m))
+  const closeMenu = () => setMenu(null)
 
   useEffect(() => {
     const el = mainRef.current
@@ -223,14 +437,14 @@ export default function AppLayout({ children, onLogout }) {
 
   return (
     <div style={{ display:'flex', height:'100vh', background:'transparent', fontFamily:'Inter,system-ui,sans-serif' }}>
-      <Sidebar onLogout={onLogout} />
+      <Sidebar onLogout={onLogout} role={role} />
       <div style={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', minWidth:0 }}>
 
         {/* ── Top Navbar ── */}
         <header style={{
           height:56,
           display:'flex', alignItems:'center', padding:'0 24px',
-          position:'sticky', top:0, zIndex:100,
+          position:'sticky', top:0, zIndex:300,
           transition:'background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease',
           ...headerBg,
         }}>
@@ -241,7 +455,7 @@ export default function AppLayout({ children, onLogout }) {
           </div>
 
           {/* Nav links */}
-          <nav style={{ display:'flex', alignItems:'center', gap:2, flex:1 }}>
+          <nav className="topbar-nav" style={{ display:'flex', alignItems:'center', gap:2 }}>
             {NAV.map((item,i) => (
               <div key={i} style={{ position:'relative' }}
                 onMouseEnter={() => item.mega && setOpen(i)}
@@ -272,41 +486,111 @@ export default function AppLayout({ children, onLogout }) {
             ))}
           </nav>
 
+          <div style={{ flex:1 }} />
+
           {/* Right */}
           <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <div style={{
+            <div className="hide-sm" style={{
               display:'flex', alignItems:'center', gap:7,
-              background: searchFocus ? '#fff' : '#F5F5F5',
-              border:`1px solid ${searchFocus ? '#7670C5' : '#E5E7EB'}`,
-              borderRadius:8, padding:'6px 12px', transition:'all 0.2s',
+              background: searchFocus ? ink.surface : ink.row,
+              border:`1px solid ${searchFocus ? brand.primary : ink.border}`,
+              borderRadius:radius.sm, padding:'7px 12px', transition:'all 0.2s',
+              boxShadow: searchFocus ? '0 0 0 3px rgba(108,92,224,0.14)' : 'none',
             }}>
-              <Search size={13} color='#AAA' />
-              <input placeholder="Search..." onFocus={()=>setSF(true)} onBlur={()=>setSF(false)} style={{
+              <Search size={13} color={ink.textMuted} />
+              <input placeholder="Search leads, calls, chats..." onFocus={()=>setSF(true)} onBlur={()=>setSF(false)} style={{
                 background:'none', border:'none', outline:'none',
-                fontSize:13, fontFamily:'inherit', color:'#000', width:130,
+                fontSize:13, fontFamily:'inherit', color:ink.text, width:160,
               }} />
             </div>
 
-            <button style={{
-              width:34, height:34, borderRadius:8, border:'1px solid #E5E7EB',
-              background:'#fff', display:'flex', alignItems:'center', justifyContent:'center',
-              cursor:'pointer', position:'relative',
-            }}>
-              <Bell size={15} color='#888' />
-              <div style={{ position:'absolute', top:7, right:7, width:6, height:6, borderRadius:'50%', background:'#7670C5' }}/>
-            </button>
+            {/* Filters */}
+            <div style={{ position:'relative' }}>
+              <button
+                aria-label="Filters"
+                onClick={() => toggleMenu('filter')}
+                style={{
+                  height:36, padding:'0 12px', borderRadius:radius.sm,
+                  border:`1px solid ${menu==='filter' ? brand.primary : ink.border}`,
+                  background: menu==='filter' ? brand.primarySoft : ink.surface,
+                  display:'flex', alignItems:'center', gap:7, cursor:'pointer',
+                  fontFamily:'inherit', fontSize:13, fontWeight:600,
+                  color: menu==='filter' ? brand.primaryDeep : ink.textSecondary,
+                  transition:'all 0.15s',
+                }}
+              >
+                <SlidersHorizontal size={14} />
+                <span className="hide-sm">Filters</span>
+              </button>
+              <AnimatePresence>{menu==='filter' && <FilterMenu />}</AnimatePresence>
+            </div>
 
-            <div style={{ display:'flex', alignItems:'center', gap:8, cursor:'pointer' }}>
-              <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Ahmed"
-                style={{ width:30, height:30, borderRadius:8, objectFit:'cover', border:'1px solid #E5E7EB' }}/>
-              <span style={{ fontSize:13, fontWeight:500, color:'#000' }}>Ahmed</span>
-              <ChevronDown size={12} color='#AAA' />
+            {/* Notifications */}
+            <div style={{ position:'relative' }}>
+              <button
+                aria-label="Notifications"
+                onClick={() => toggleMenu('notif')}
+                style={{
+                  width:36, height:36, borderRadius:radius.sm,
+                  border:`1px solid ${menu==='notif' ? brand.primary : ink.border}`,
+                  background: menu==='notif' ? brand.primarySoft : ink.surface,
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  cursor:'pointer', position:'relative', transition:'all 0.15s',
+                }}
+              >
+                <Bell size={15} color={menu==='notif' ? brand.primaryDeep : ink.textSecondary} />
+                <span style={{
+                  position:'absolute', top:6, right:6, minWidth:7, height:7,
+                  borderRadius:'50%', background:brand.primary,
+                  border:`1.5px solid ${ink.surface}`,
+                }}/>
+              </button>
+              <AnimatePresence>{menu==='notif' && <NotificationMenu onClose={closeMenu} />}</AnimatePresence>
+            </div>
+
+            {/* Profile */}
+            <div style={{ position:'relative' }}>
+              <button
+                aria-label="Account menu"
+                onClick={() => toggleMenu('profile')}
+                style={{
+                  display:'flex', alignItems:'center', gap:8, cursor:'pointer',
+                  background: menu==='profile' ? brand.primarySoft : 'transparent',
+                  border:`1px solid ${menu==='profile' ? brand.primarySoftBorder : 'transparent'}`,
+                  borderRadius:radius.sm, padding:'4px 8px 4px 4px', fontFamily:'inherit',
+                  transition:'all 0.15s',
+                }}
+              >
+                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Ahmed"
+                  style={{ width:30, height:30, borderRadius:8, objectFit:'cover', border:`1px solid ${ink.border}` }}/>
+                <span className="hide-sm" style={{ fontSize:13, fontWeight:600, color:ink.text }}>Ahmed</span>
+                <motion.span animate={{ rotate: menu==='profile' ? 180 : 0 }} transition={{ duration:0.18 }}>
+                  <ChevronDown size={12} color={ink.textMuted} />
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {menu==='profile' && (
+                  <ProfileMenu
+                    role={role}
+                    onLogout={onLogout}
+                    onNavigate={(to) => { closeMenu(); navigate(to) }}
+                  />
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </header>
 
-        <main ref={mainRef} style={{
-          flex:1, overflow:'auto', padding:'28px 32px',
+        {/* Click-away catcher for header menus */}
+        {menu && (
+          <div
+            onClick={closeMenu}
+            style={{ position:'fixed', inset:0, zIndex:250, background:'transparent' }}
+          />
+        )}
+
+        <main ref={mainRef} className="app-main" style={{
+          flex:1, overflow:'auto',
           background:'linear-gradient(180deg, rgba(248,248,250,0.42) 0%, rgba(245,243,255,0.38) 100%)',
           WebkitBackdropFilter:'blur(14px)',
           backdropFilter:'blur(14px)',

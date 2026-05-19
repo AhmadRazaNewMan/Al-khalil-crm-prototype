@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Phone, MessageCircle, MessageSquare, Mail, Users, Shield, Bell, Zap, Check, ChevronRight, Bot, ArrowRight } from 'lucide-react'
 import { agents, companyInfo, aiSessionStats, knowledgeBaseDocuments } from '../../data/dummyData'
-import CompanyFooter from '../layout/CompanyFooter'
 
 const AV = ({ name, photo, size=38 }) => {
   const initials = (name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()
@@ -197,7 +196,6 @@ function AISection() {
           </div>
         </div>
       ))}
-      <CompanyFooter />
     </div>
   )
 }

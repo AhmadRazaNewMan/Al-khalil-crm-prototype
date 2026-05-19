@@ -96,7 +96,7 @@ export default function LeadsPage() {
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:24 }}>
         <div>
           <h1 style={{ fontSize:22, fontWeight:600, color:'#000', margin:0 }}>Leads</h1>
-          <p style={{ fontSize:13, color:'#888', marginTop:4, margin:0 }}>{leads.length} total leads · Across all channels</p>
+          <p style={{ fontSize:13.5, fontWeight:500, color:'#4A4658', marginTop:4, margin:0 }}>{leads.length} total leads · Across all channels</p>
         </div>
         <button style={{
           padding:'9px 20px', borderRadius:9999, background:'#000',

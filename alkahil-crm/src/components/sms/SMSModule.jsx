@@ -82,7 +82,7 @@ export default function SMSModule() {
               background:'#F5F5F5', color:'#666', border:'1px solid #E5E7EB',
             }}>Dinstar UC2000-VG</span>
           </div>
-          <p style={{ fontSize:'13px', color:'#888' }}>GSM gateway integration · 4 active SIM ports · HTTP REST API</p>
+          <p style={{ fontSize:'13.5px', fontWeight:500, color:'#4A4658' }}>GSM gateway integration · 4 active SIM ports · HTTP REST API</p>
         </div>
       </div>
 
