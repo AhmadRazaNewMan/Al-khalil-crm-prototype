@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Phone, MessageCircle, MessageSquare, Mail, Search, Send, Paperclip, Mic, MoreVertical, Zap, CheckCheck, FileText, Tag, ArrowRight } from 'lucide-react'
 import { conversations, leads } from '../../data/dummyData'
+import AgentPickerPanel from '../layout/AgentPickerPanel'
 
 const CHANNEL = {
-  whatsapp: { icon:MessageCircle, color:'#7670C5', label:'WhatsApp' },
-  call:     { icon:Phone,         color:'#7670C5', label:'Call'     },
-  sms:      { icon:MessageSquare, color:'#7670C5', label:'SMS'      },
-  email:    { icon:Mail,          color:'#7670C5', label:'Email'    },
+  whatsapp: { icon:MessageCircle, color:'#C8A75B', label:'WhatsApp' },
+  call:     { icon:Phone,         color:'#C8A75B', label:'Call'     },
+  sms:      { icon:MessageSquare, color:'#C8A75B', label:'SMS'      },
+  email:    { icon:Mail,          color:'#C8A75B', label:'Email'    },
 }
 const STATUS_LABEL = { active:'Active', missed:'Missed', closed:'Closed', ai:'AI Agent' }
 
@@ -29,7 +30,7 @@ const AV = ({ name, size=40 }) => {
       <div style={{
         display: photo ? 'none' : 'flex', position: photo ? 'absolute' : 'static', top:0, left:0,
         width:size, height:size, borderRadius:Math.round(size*0.28),
-        background:'linear-gradient(135deg,#7670C5,#D18EE2)',
+        background:'linear-gradient(135deg,#C8A75B,#DDB96A)',
         alignItems:'center', justifyContent:'center',
         fontSize:Math.round(size*0.36), fontWeight:700, color:'#fff',
       }}>{initials}</div>
@@ -46,8 +47,8 @@ function ConvRow({ conv, active, onClick }) {
   return (
     <div onClick={onClick} style={{
       padding:'12px 14px', cursor:'pointer',
-      background: active ? '#F3F2FF' : 'transparent',
-      borderLeft: active ? '2px solid #7670C5' : '2px solid transparent',
+      background: active ? '#FBF6EC' : 'transparent',
+      borderLeft: active ? '2px solid #C8A75B' : '2px solid transparent',
       borderBottom:'1px solid #F5F5F5', transition:'background 0.12s',
     }}
     onMouseEnter={e=>{ if(!active) e.currentTarget.style.background='#FAFAFA' }}
@@ -72,7 +73,7 @@ function ConvRow({ conv, active, onClick }) {
           <div style={{ fontSize:11, color:'#888', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', marginBottom:5 }}>{conv.lastMessage}</div>
           <div style={{ display:'flex', alignItems:'center', gap:6 }}>
             <span style={{ fontSize:10, color:'#666', background:'#F5F5F5', border:'1px solid #E5E7EB', padding:'1px 7px', borderRadius:20 }}>{sl}</span>
-            {conv.unread > 0 && <span style={{ fontSize:10, fontWeight:700, color:'#fff', background:'#7670C5', borderRadius:10, padding:'1px 6px', marginLeft:'auto' }}>{conv.unread}</span>}
+            {conv.unread > 0 && <span style={{ fontSize:10, fontWeight:700, color:'#fff', background:'#C8A75B', borderRadius:10, padding:'1px 6px', marginLeft:'auto' }}>{conv.unread}</span>}
           </div>
         </div>
       </div>
@@ -92,8 +93,8 @@ function Bubble({ msg }) {
         background:'#F5F5F5', border:'1px solid #E5E7EB',
         borderRadius:20, padding:'6px 14px', fontSize:11, color:'#888',
       }}>
-        <Phone size={11} color='#7670C5' />
-        {msg.text} {msg.duration && <strong style={{ color:'#7670C5' }}>{msg.duration}</strong>}
+        <Phone size={11} color='#C8A75B' />
+        {msg.text} {msg.duration && <strong style={{ color:'#C8A75B' }}>{msg.duration}</strong>}
         {msg.recording && <span style={{ color:'#5EA538', background:'#F0FAF0', border:'1px solid #C6EAC0', padding:'0 6px', borderRadius:8, fontSize:10 }}>● REC</span>}
       </span>
     </div>
@@ -111,13 +112,13 @@ function Bubble({ msg }) {
     <div style={{ display:'flex', justifyContent: isLead ? 'flex-start' : 'flex-end', marginBottom:8, gap:8, alignItems:'flex-end' }}>
       {isLead && <AV name="Lead" size={26} />}
       <div style={{ maxWidth:'68%' }}>
-        {msg.from === 'ai' && <div style={{ fontSize:10, color:'#7670C5', marginBottom:4, display:'flex', alignItems:'center', gap:3 }}><Zap size={9}/>AI Agent</div>}
+        {msg.from === 'ai' && <div style={{ fontSize:10, color:'#C8A75B', marginBottom:4, display:'flex', alignItems:'center', gap:3 }}><Zap size={9}/>AI Agent</div>}
         {msg.type === 'document' ? (
           <div style={{
-            background:'#F8F5FF', border:'1px solid #E8E0FF', borderRadius:10,
+            background:'#F8F5FF', border:'1px solid #EDD9A3', borderRadius:10,
             padding:'10px 14px', display:'flex', alignItems:'center', gap:10,
           }}>
-            <FileText size={18} color='#7670C5' />
+            <FileText size={18} color='#C8A75B' />
             <div>
               <div style={{ fontSize:12, fontWeight:500, color:'#000' }}>{msg.fileName}</div>
               <div style={{ fontSize:10, color:'#888' }}>{msg.fileSize}</div>
@@ -125,7 +126,7 @@ function Bubble({ msg }) {
           </div>
         ) : (
           <div style={{
-            background: isLead ? '#F5F5F5' : (msg.from==='ai' ? '#F8F5FF' : '#7670C5'),
+            background: isLead ? '#F5F5F5' : (msg.from==='ai' ? '#F8F5FF' : '#C8A75B'),
             borderRadius: isLead ? '12px 12px 12px 3px' : '12px 12px 3px 12px',
             padding:'10px 14px', fontSize:13,
             color: isLead ? '#000' : '#fff',
@@ -138,21 +139,27 @@ function Bubble({ msg }) {
       </div>
       {!isLead && (
         msg.from === 'ai'
-          ? <div style={{ width:26, height:26, borderRadius:8, background:'#F8F5FF', border:'1px solid #E8E0FF', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Zap size={12} color='#7670C5'/></div>
+          ? <div style={{ width:26, height:26, borderRadius:8, background:'#F8F5FF', border:'1px solid #EDD9A3', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><Zap size={12} color='#C8A75B'/></div>
           : <AV name="Agent" size={26} />
       )}
     </div>
   )
 }
 
-export default function UnifiedInbox() {
+export default function UnifiedInbox({ role = 'admin' }) {
+  const isAdmin = role === 'admin'
+  const [selectedAgent, setSelectedAgent] = useState(null)
   const [tab,      setTab]     = useState('all')
-  const [selected, setSelected]= useState(conversations[0])
+  const [selected, setSelected]= useState(null)
   const [message,  setMessage] = useState('')
   const [noteMode, setNoteMode]= useState(false)
   const [search,   setSearch]  = useState('')
 
-  const filtered = conversations.filter(c =>
+  const baseConvs = isAdmin && selectedAgent
+    ? conversations.filter(c => c.agentId === selectedAgent.id)
+    : isAdmin ? [] : conversations
+
+  const filtered = baseConvs.filter(c =>
     (tab==='all' || c.channel===tab) &&
     (!search || c.leadName.toLowerCase().includes(search.toLowerCase()))
   )
@@ -165,34 +172,62 @@ export default function UnifiedInbox() {
 
       {/* List */}
       <div style={{ width:300, flexShrink:0, display:'flex', flexDirection:'column', background:'#fff', border:'1px solid #E5E7EB', borderRadius:12, overflow:'hidden' }}>
-        <div style={{ padding:'10px 10px 0' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:7, background:'#F5F5F5', borderRadius:8, padding:'7px 12px', marginBottom:8 }}>
-            <Search size={13} color='#AAA' />
-            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search conversations..." style={{ background:'none', border:'none', outline:'none', fontSize:12, fontFamily:'inherit', color:'#000', width:'100%' }} />
-          </div>
-          {/* Tabs */}
-          <div style={{ display:'flex', borderBottom:'1px solid #F0F0F0', gap:2 }}>
-            {TABS.map(t => {
-              const cfg = t==='all' ? null : CHANNEL[t]
-              const TIcon = cfg?.icon
-              return (
-                <button key={t} onClick={()=>setTab(t)} style={{
-                  flex:1, background:'none', border:'none', cursor:'pointer', padding:'6px 3px',
-                  fontSize:10, fontFamily:'inherit', color: tab===t ? '#7670C5' : '#AAA',
-                  borderBottom: tab===t ? '2px solid #7670C5' : '2px solid transparent',
-                  transition:'all 0.15s', display:'flex', flexDirection:'column', alignItems:'center', gap:2,
-                }}>
-                  {TIcon ? <TIcon size={12} color={tab===t ? '#7670C5' : '#CCC'}/> : <Search size={12} color={tab===t ? '#7670C5' : '#CCC'}/>}
-                  <span style={{ textTransform:'capitalize' }}>{t==='all' ? 'All' : t}</span>
-                </button>
-              )
-            })}
-          </div>
-          <div style={{ fontSize:10, color:'#CCC', padding:'6px 2px' }}>{filtered.length} conversations</div>
-        </div>
-        <div style={{ flex:1, overflowY:'auto' }}>
-          {filtered.map(c => <ConvRow key={c.id} conv={c} active={selected?.id===c.id} onClick={()=>setSelected(c)} />)}
-        </div>
+        {isAdmin ? (
+          <AgentPickerPanel
+            selectedAgent={selectedAgent}
+            onSelect={a => { setSelectedAgent(a); setSelected(null) }}
+            onBack={() => { setSelectedAgent(null); setSelected(null) }}
+            getCount={a => conversations.filter(c => c.agentId === a.id).length}
+            countLabel="conversations"
+          >
+            {/* Thread list shown after agent selected */}
+            <div style={{ padding:'10px 10px 0' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:7, background:'#F5F5F5', borderRadius:8, padding:'7px 12px', marginBottom:8 }}>
+                <Search size={13} color='#AAA' />
+                <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search conversations..." style={{ background:'none', border:'none', outline:'none', fontSize:12, fontFamily:'inherit', color:'#000', width:'100%' }} />
+              </div>
+              <div style={{ display:'flex', borderBottom:'1px solid #F0F0F0', gap:2 }}>
+                {TABS.map(t => {
+                  const cfg = t==='all' ? null : CHANNEL[t]; const TIcon = cfg?.icon
+                  return (
+                    <button key={t} onClick={()=>setTab(t)} style={{ flex:1, background:'none', border:'none', cursor:'pointer', padding:'6px 3px', fontSize:10, fontFamily:'inherit', color: tab===t ? '#C8A75B' : '#AAA', borderBottom: tab===t ? '2px solid #C8A75B' : '2px solid transparent', transition:'all 0.15s', display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
+                      {TIcon ? <TIcon size={12} color={tab===t ? '#C8A75B' : '#CCC'}/> : <Search size={12} color={tab===t ? '#C8A75B' : '#CCC'}/>}
+                      <span style={{ textTransform:'capitalize' }}>{t==='all' ? 'All' : t}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              <div style={{ fontSize:10, color:'#CCC', padding:'6px 2px' }}>{filtered.length} conversations</div>
+            </div>
+            <div style={{ flex:1, overflowY:'auto' }}>
+              {filtered.map(c => <ConvRow key={c.id} conv={c} active={selected?.id===c.id} onClick={()=>setSelected(c)} />)}
+            </div>
+          </AgentPickerPanel>
+        ) : (
+          <>
+            <div style={{ padding:'10px 10px 0' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:7, background:'#F5F5F5', borderRadius:8, padding:'7px 12px', marginBottom:8 }}>
+                <Search size={13} color='#AAA' />
+                <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search conversations..." style={{ background:'none', border:'none', outline:'none', fontSize:12, fontFamily:'inherit', color:'#000', width:'100%' }} />
+              </div>
+              <div style={{ display:'flex', borderBottom:'1px solid #F0F0F0', gap:2 }}>
+                {TABS.map(t => {
+                  const cfg = t==='all' ? null : CHANNEL[t]; const TIcon = cfg?.icon
+                  return (
+                    <button key={t} onClick={()=>setTab(t)} style={{ flex:1, background:'none', border:'none', cursor:'pointer', padding:'6px 3px', fontSize:10, fontFamily:'inherit', color: tab===t ? '#C8A75B' : '#AAA', borderBottom: tab===t ? '2px solid #C8A75B' : '2px solid transparent', transition:'all 0.15s', display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
+                      {TIcon ? <TIcon size={12} color={tab===t ? '#C8A75B' : '#CCC'}/> : <Search size={12} color={tab===t ? '#C8A75B' : '#CCC'}/>}
+                      <span style={{ textTransform:'capitalize' }}>{t==='all' ? 'All' : t}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              <div style={{ fontSize:10, color:'#CCC', padding:'6px 2px' }}>{filtered.length} conversations</div>
+            </div>
+            <div style={{ flex:1, overflowY:'auto' }}>
+              {filtered.map(c => <ConvRow key={c.id} conv={c} active={selected?.id===c.id} onClick={()=>setSelected(c)} />)}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Thread */}
@@ -207,17 +242,17 @@ export default function UnifiedInbox() {
                   <div style={{ fontSize:11, color:'#888', display:'flex', alignItems:'center', gap:5 }}>
                     {ChIcon && <ChIcon size={11} color={ch.color}/>}
                     {ch?.label} · {selected.agentName}
-                    {selected.status==='ai' && <span style={{ color:'#7670C5', display:'flex', alignItems:'center', gap:2 }}><Zap size={9}/> AI</span>}
+                    {selected.status==='ai' && <span style={{ color:'#C8A75B', display:'flex', alignItems:'center', gap:2 }}><Zap size={9}/> AI</span>}
                   </div>
                 </div>
               </div>
               <div style={{ display:'flex', gap:8 }}>
                 {selected.status==='ai' && (
-                  <button style={{ padding:'6px 14px', borderRadius:8, background:'#F8F5FF', border:'1px solid #E8E0FF', color:'#7670C5', fontSize:12, cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', gap:5 }}>
+                  <button style={{ padding:'6px 14px', borderRadius:8, background:'#F8F5FF', border:'1px solid #EDD9A3', color:'#C8A75B', fontSize:12, cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', gap:5 }}>
                     <ArrowRight size={12}/> Take Over
                   </button>
                 )}
-                <button style={{ padding:'6px 14px', borderRadius:8, background:'#F3F2FF', border:'1px solid #E8E0FF', color:'#7670C5', fontSize:12, cursor:'pointer', fontFamily:'inherit' }}>Reassign</button>
+                <button style={{ padding:'6px 14px', borderRadius:8, background:'#FBF6EC', border:'1px solid #EDD9A3', color:'#C8A75B', fontSize:12, cursor:'pointer', fontFamily:'inherit' }}>Reassign</button>
                 <button style={{ width:32, height:32, borderRadius:8, background:'#F5F5F5', border:'1px solid #E5E7EB', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
                   <MoreVertical size={14} color='#AAA'/>
                 </button>
@@ -233,10 +268,10 @@ export default function UnifiedInbox() {
                 {['Reply','Internal Note'].map(m => (
                   <button key={m} onClick={()=>setNoteMode(m==='Internal Note')} style={{
                     padding:'3px 12px', borderRadius:20, fontSize:11, cursor:'pointer', fontFamily:'inherit',
-                    background: (noteMode && m==='Internal Note') || (!noteMode && m==='Reply') ? '#F3F2FF' : 'transparent',
+                    background: (noteMode && m==='Internal Note') || (!noteMode && m==='Reply') ? '#FBF6EC' : 'transparent',
                     border:'1px solid',
-                    borderColor: (noteMode && m==='Internal Note') || (!noteMode && m==='Reply') ? '#C8C4F0' : '#E5E7EB',
-                    color: (noteMode && m==='Internal Note') || (!noteMode && m==='Reply') ? '#7670C5' : '#888',
+                    borderColor: (noteMode && m==='Internal Note') || (!noteMode && m==='Reply') ? '#EDD9A3' : '#E5E7EB',
+                    color: (noteMode && m==='Internal Note') || (!noteMode && m==='Reply') ? '#C8A75B' : '#888',
                   }}>{m}</button>
                 ))}
               </div>
@@ -251,7 +286,7 @@ export default function UnifiedInbox() {
                     <button style={{ background:'none', border:'none', cursor:'pointer', color:'#CCC' }}><Mic size={15}/></button>
                   </div>
                   <button onClick={()=>setMessage('')} style={{
-                    padding:'6px 16px', borderRadius:8, background:'#7670C5',
+                    padding:'6px 16px', borderRadius:8, background:'#C8A75B',
                     border:'none', color:'#fff', fontSize:12, cursor:'pointer', fontFamily:'inherit',
                     display:'flex', alignItems:'center', gap:5,
                   }}>
@@ -278,13 +313,13 @@ export default function UnifiedInbox() {
             {[{ l:'Status', v:'Hot Lead' }, { l:'Budget', v:'AED 2.5M', accent:true }, { l:'Interest', v:'3BR Downtown' }, { l:'Agent', v:selected.agentName }].map((r,i) => (
               <div key={i} style={{ display:'flex', justifyContent:'space-between', marginBottom:7 }}>
                 <span style={{ fontSize:11, color:'#AAA' }}>{r.l}</span>
-                <span style={{ fontSize:12, color: r.accent ? '#7670C5' : '#333', fontWeight: r.accent ? 600 : 400 }}>{r.v}</span>
+                <span style={{ fontSize:12, color: r.accent ? '#C8A75B' : '#333', fontWeight: r.accent ? 600 : 400 }}>{r.v}</span>
               </div>
             ))}
             <div style={{ height:1, background:'#F0F0F0', margin:'12px 0' }}/>
             <div style={{ display:'flex', gap:6 }}>
-              <button style={{ flex:1, padding:'7px', borderRadius:8, background:'#F3F2FF', border:'none', color:'#7670C5', fontSize:11, cursor:'pointer', fontFamily:'inherit' }}>Call</button>
-              <button style={{ flex:1, padding:'7px', borderRadius:8, background:'#F3F2FF', border:'none', color:'#7670C5', fontSize:11, cursor:'pointer', fontFamily:'inherit' }}>WhatsApp</button>
+              <button style={{ flex:1, padding:'7px', borderRadius:8, background:'#FBF6EC', border:'none', color:'#C8A75B', fontSize:11, cursor:'pointer', fontFamily:'inherit' }}>Call</button>
+              <button style={{ flex:1, padding:'7px', borderRadius:8, background:'#FBF6EC', border:'none', color:'#C8A75B', fontSize:11, cursor:'pointer', fontFamily:'inherit' }}>WhatsApp</button>
             </div>
           </div>
 
@@ -294,7 +329,7 @@ export default function UnifiedInbox() {
               const hch = CHANNEL[h.ch]; const HI = hch.icon
               return (
                 <div key={i} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:8 }}>
-                  <HI size={13} color='#7670C5'/><div style={{ flex:1 }}><div style={{ fontSize:12, color:'#333' }}>{hch.label}</div><div style={{ fontSize:10, color:'#AAA' }}>{h.last}</div></div>
+                  <HI size={13} color='#C8A75B'/><div style={{ flex:1 }}><div style={{ fontSize:12, color:'#333' }}>{hch.label}</div><div style={{ fontSize:10, color:'#AAA' }}>{h.last}</div></div>
                   <span style={{ fontSize:11, color:'#888' }}>{h.count}</span>
                 </div>
               )

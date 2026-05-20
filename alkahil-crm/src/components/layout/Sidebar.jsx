@@ -7,6 +7,7 @@ import {
   Phone,
   MessageCircle,
   MessageSquare,
+  Mail,
   Users,
   Bot,
   Settings,
@@ -41,8 +42,8 @@ const Logo = () => {
       <path d="M7 21H21" stroke="white" strokeWidth="1.4" strokeLinecap="round" opacity="0.6" />
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#7670C5" />
-          <stop offset="1" stopColor="#D18EE2" />
+          <stop stopColor="#0B1F3A" />
+          <stop offset="1" stopColor="#C8A75B" />
         </linearGradient>
       </defs>
     </svg>
@@ -78,6 +79,7 @@ const navSections = [
       { to: '/calls', icon: Phone, label: 'Calls', badge: 7 },
       { to: '/whatsapp', icon: MessageCircle, label: 'WhatsApp' },
       { to: '/sms', icon: MessageSquare, label: 'SMS' },
+      { to: '/email', icon: Mail, label: 'Email' },
     ],
   },
   {

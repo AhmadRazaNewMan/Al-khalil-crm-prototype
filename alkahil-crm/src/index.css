@@ -3,17 +3,17 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --accent: #6C5CE0;
-  --accent-deep: #5A49C9;
-  --accent-2: #C77BDB;
+  --accent: #C8A75B;
+  --accent-deep: #0B1F3A;
+  --accent-2: #1E3A5F;
   --accent-coral: #FF7759;
   --blue: #3D63D8;
   --success: #3F9B2F;
   --error: #C53B28;
-  --border: #E7E4F0;
-  --text: #1A1626;
-  --text-muted: #6E6982;
-  --bg: #FAF9FE;
+  --border: #E2E8F0;
+  --text: #1F2937;
+  --text-muted: #6B7280;
+  --bg: #F5F7FA;
   --surface: #FFFFFF;
 }
 
@@ -21,7 +21,7 @@ html, body, #root { height: 100%; }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #0f0a1a;
+  background: #0B1F3A;
   color: var(--text);
   font-size: 14px;
   line-height: 1.5;
@@ -33,7 +33,7 @@ body {
    Mouse clicks stay clean (:focus-visible only). */
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(108,92,224,0.34);
+  box-shadow: 0 0 0 3px rgba(200,167,91,0.34);
   border-radius: 6px;
 }
 button, a, input, [role="button"], [tabindex] { outline: none; }
@@ -44,8 +44,8 @@ button, a, input, [role="button"], [tabindex] { outline: none; }
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #D6D1E6; border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
-::-webkit-scrollbar-thumb:hover { background: #BBB4D4; background-clip: content-box; }
+::-webkit-scrollbar-thumb { background: #B8C9DC; border-radius: 4px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: #8AABB8; background-clip: content-box; }
 
 /* Keyframes */
 @keyframes spin { to { transform: rotate(360deg); } }

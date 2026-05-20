@@ -17,7 +17,7 @@ const AV = ({ name, photo, size=38 }) => {
       <div style={{
         display: photo ? 'none' : 'flex', position: photo ? 'absolute' : 'static', top:0, left:0,
         width:`${size}px`, height:`${size}px`, borderRadius:'10px',
-        background:'linear-gradient(135deg,#7670C5,#D18EE2)',
+        background:'linear-gradient(135deg,#C8A75B,#DDB96A)',
         alignItems:'center', justifyContent:'center',
         fontSize:`${Math.round(size*0.33)}px`, fontWeight:700, color:'#fff',
       }}>{initials}</div>
@@ -71,8 +71,8 @@ function AgentsSection() {
               }}>{agent.status}</span>
               <button style={{
                 padding:'5px 12px', borderRadius:'8px', fontSize:'11px',
-                background:'#F3F2FF', border:'1px solid #E5E7EB',
-                color:'#7670C5', cursor:'pointer', fontFamily:'inherit', fontWeight:500,
+                background:'#FBF6EC', border:'1px solid #E5E7EB',
+                color:'#C8A75B', cursor:'pointer', fontFamily:'inherit', fontWeight:500,
               }}>Edit</button>
             </div>
           </motion.div>
@@ -82,7 +82,7 @@ function AgentsSection() {
         whileHover={{scale:1.02}} whileTap={{scale:0.98}}
         style={{
           padding:'10px 20px', borderRadius:'10px',
-          background:'linear-gradient(135deg,#7670C5,#D18EE2)',
+          background:'linear-gradient(135deg,#C8A75B,#DDB96A)',
           border:'none', color:'#fff', fontSize:'13px', cursor:'pointer', fontFamily:'inherit',
           fontWeight:500,
         }}
@@ -135,13 +135,13 @@ function AISection() {
     <div>
       <div style={{ fontSize:'15px', fontWeight:600, color:'#111', marginBottom:'16px' }}>AI Automation Settings</div>
       <div style={{
-        background:'#F8F5FF', border:'1px solid #E9D5FF',
+        background:'#F8F5FF', border:'1px solid #EDD9A3',
         borderRadius:'12px', padding:'14px 16px', marginBottom:'16px',
         display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, flexWrap:'wrap',
       }}>
         <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-          <Zap size={14} color='#7670C5'/>
-          <span style={{ fontSize:'13px', color:'#5B21B6' }}>
+          <Zap size={14} color='#C8A75B'/>
+          <span style={{ fontSize:'13px', color:'#1E3A5F' }}>
             GPT-4o + Whisper RAG · {aiSessionStats.documentsIndexed} docs · {aiSessionStats.totalChunks} chunks
           </span>
         </div>
@@ -150,7 +150,7 @@ function AISection() {
           onClick={() => navigate('/ai-agent')}
           style={{
             display:'flex', alignItems:'center', gap:6, padding:'8px 14px', borderRadius:10,
-            border:'none', background:'linear-gradient(135deg,#7670C5,#D18EE2)',
+            border:'none', background:'linear-gradient(135deg,#C8A75B,#DDB96A)',
             color:'#fff', fontSize:12, fontWeight:500, cursor:'pointer', fontFamily:'inherit',
           }}
         >
@@ -180,7 +180,7 @@ function AISection() {
             onClick={() => toggle(item.key)}
             style={{
               width:'44px', height:'24px', borderRadius:'12px', cursor:'pointer',
-              background: toggles[item.key] ? 'linear-gradient(135deg,#7670C5,#D18EE2)' : '#E5E7EB',
+              background: toggles[item.key] ? 'linear-gradient(135deg,#C8A75B,#DDB96A)' : '#E5E7EB',
               position:'relative', transition:'background 0.25s', flexShrink:0,
             }}
           >
@@ -240,15 +240,15 @@ export default function SettingsPage() {
               style={{
                 width:'100%', display:'flex', alignItems:'center', gap:'10px',
                 padding:'10px 10px', borderRadius:'10px', border:'none',
-                background: active ? '#F3F2FF' : 'transparent',
-                color: active ? '#7670C5' : '#555',
+                background: active ? '#FBF6EC' : 'transparent',
+                color: active ? '#C8A75B' : '#555',
                 cursor:'pointer', fontSize:'13px', fontFamily:'inherit',
                 textAlign:'left', transition:'all 0.15s', marginBottom:'2px', fontWeight: active ? 500 : 400,
               }}
             >
               <Icon size={15}/>
               {s.label}
-              {active && <ChevronRight size={12} style={{ marginLeft:'auto' }} color='#7670C5'/>}
+              {active && <ChevronRight size={12} style={{ marginLeft:'auto' }} color='#C8A75B'/>}
             </button>
           )
         })}

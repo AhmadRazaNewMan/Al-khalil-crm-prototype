@@ -348,7 +348,7 @@ function MegaDropdown({ nav, onClose }) {
       transition={{ duration:0.16 }}
       style={{
         position:'absolute', top:'calc(100% + 8px)', left:'50%', transform:'translateX(-50%)',
-        background:'#17171C', border:'1px solid rgba(255,255,255,0.08)',
+        background:'#071428', border:'1px solid rgba(255,255,255,0.08)',
         borderRadius:16, padding:20, boxShadow:'0 24px 60px rgba(0,0,0,0.45)',
         zIndex:200, minWidth:660,
       }}
@@ -364,7 +364,7 @@ function MegaDropdown({ nav, onClose }) {
                 onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.06)'}
                 onMouseLeave={e=>e.currentTarget.style.background='transparent'}
               >
-                <div style={{ width:7, height:7, borderRadius:'50%', background:'#7670C5', flexShrink:0, marginTop:5 }}/>
+                <div style={{ width:7, height:7, borderRadius:'50%', background:'#C8A75B', flexShrink:0, marginTop:5 }}/>
                 <div>
                   <div style={{ fontSize:13, color:'#fff', lineHeight:'1.3' }}>{item.label}</div>
                   <div style={{ fontSize:11, color:'rgba(255,255,255,0.38)', marginTop:2 }}>{item.desc}</div>
@@ -495,7 +495,7 @@ export default function AppLayout({ children, onLogout, role = 'admin' }) {
               background: searchFocus ? ink.surface : ink.row,
               border:`1px solid ${searchFocus ? brand.primary : ink.border}`,
               borderRadius:radius.sm, padding:'7px 12px', transition:'all 0.2s',
-              boxShadow: searchFocus ? '0 0 0 3px rgba(108,92,224,0.14)' : 'none',
+              boxShadow: searchFocus ? '0 0 0 3px rgba(200,167,91,0.14)' : 'none',
             }}>
               <Search size={13} color={ink.textMuted} />
               <input placeholder="Search leads, calls, chats..." onFocus={()=>setSF(true)} onBlur={()=>setSF(false)} style={{
@@ -591,7 +591,7 @@ export default function AppLayout({ children, onLogout, role = 'admin' }) {
 
         <main ref={mainRef} className="app-main" style={{
           flex:1, overflow:'auto',
-          background:'linear-gradient(180deg, rgba(248,248,250,0.42) 0%, rgba(245,243,255,0.38) 100%)',
+          background:'linear-gradient(180deg, rgba(248,248,250,0.42) 0%, rgba(245,247,250,0.42) 100%)',
           WebkitBackdropFilter:'blur(14px)',
           backdropFilter:'blur(14px)',
         }}>

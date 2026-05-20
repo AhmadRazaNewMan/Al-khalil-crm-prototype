@@ -6,7 +6,7 @@ export default function CompanyFooter({ variant = 'light', compact = false }) {
   const isDark = variant === 'dark'
   const text = isDark ? 'rgba(255,255,255,0.75)' : '#666'
   const muted = isDark ? 'rgba(255,255,255,0.5)' : '#999'
-  const link = isDark ? 'rgba(255,255,255,0.9)' : '#7670C5'
+  const link = isDark ? 'rgba(255,255,255,0.9)' : '#C8A75B'
 
   const fullAddress = `${address.line1}, ${address.line2}, ${address.postal}, ${address.region}, ${address.country}`
 
