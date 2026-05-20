@@ -1,227 +1,311 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, RefreshCw, Wifi, WifiOff, Battery, QrCode, Check, Zap } from 'lucide-react'
-import { whatsappSessions, conversations, agents } from '../../data/dummyData'
+import { motion } from 'framer-motion'
+import { MessageCircle, Send, Search, Plus, Wifi, FileText } from 'lucide-react'
+import { whatsappSessions, conversations, leads, agents } from '../../data/dummyData'
+import AgentPickerPanel from '../layout/AgentPickerPanel'
 
+const leadPhotoMap  = leads.reduce((acc, l)  => { acc[l.name] = l.photo; return acc }, {})
 const agentPhotoMap = agents.reduce((acc, a) => { acc[a.name] = a.photo; return acc }, {})
 
-const AV = ({ name, size=42 }) => {
-  const photo = agentPhotoMap[name]
-  const initials = name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()
+const AV = ({ name, useAgent = false, size = 36 }) => {
+  const photoMap = useAgent ? agentPhotoMap : leadPhotoMap
+  const photo    = photoMap[name]
+  const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
   return (
-    <div style={{ position:'relative', width:size, height:size, flexShrink:0 }}>
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
       {photo && (
         <img src={photo} alt={name}
-          style={{ width:size, height:size, borderRadius:'12px', objectFit:'cover', display:'block' }}
-          onError={e => { e.target.style.display='none'; e.target.nextSibling.style.display='flex' }}
+          style={{ width: size, height: size, borderRadius: 10, objectFit: 'cover', display: 'block' }}
+          onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex' }}
         />
       )}
       <div style={{
-        display: photo ? 'none' : 'flex', position: photo ? 'absolute' : 'static', top:0, left:0,
-        width:size, height:size, borderRadius:'12px',
-        background:'linear-gradient(135deg,#7670C5,#D18EE2)',
-        alignItems:'center', justifyContent:'center',
-        fontSize:Math.round(size*0.33), fontWeight:700, color:'#fff',
+        display: photo ? 'none' : 'flex', position: photo ? 'absolute' : 'static', top: 0, left: 0,
+        width: size, height: size, borderRadius: 10,
+        background: 'linear-gradient(135deg,#C8A75B,#DDB96A)',
+        alignItems: 'center', justifyContent: 'center',
+        fontSize: Math.round(size * 0.33), fontWeight: 700, color: '#fff',
       }}>{initials}</div>
     </div>
   )
 }
 
-// Status — label only, all same neutral gray tag
-const SESSION_LABEL = { connected:'Connected', disconnected:'Disconnected', connecting:'Connecting' }
-
-function QRModal({ agent, onClose }) {
-  const [scanned, setScanned] = useState(false)
+function StatusDot({ active }) {
   return (
-    <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} onClick={onClose}
-      style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.45)', backdropFilter:'blur(4px)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:1000 }}>
-      <motion.div initial={{ scale:0.88, y:24 }} animate={{ scale:1, y:0 }} exit={{ scale:0.88, y:24 }}
-        onClick={e=>e.stopPropagation()}
-        style={{ background:'#fff', border:'1px solid #E5E7EB', borderRadius:'20px', padding:'36px', width:'400px', textAlign:'center', boxShadow:'0 16px 48px rgba(0,0,0,0.12)' }}>
-        <div style={{ width:'52px', height:'52px', borderRadius:'16px', margin:'0 auto 20px', background:'#F5F3F0', display:'flex', alignItems:'center', justifyContent:'center' }}>
-          <MessageCircle size={26} color='#7670C5'/>
-        </div>
-        <h3 style={{ fontSize:'20px', fontWeight:700, color:'#111', marginBottom:'6px' }}>Link WhatsApp Session</h3>
-        <p style={{ fontSize:'13px', color:'#888', marginBottom:'28px', lineHeight:'1.6' }}>
-          Agent: <span style={{ color:'#333', fontWeight:500 }}>{agent.agentName}</span><br/>
-          Scan this QR code with WhatsApp on {agent.number}
-        </p>
-        {!scanned ? (
-          <>
-            <div style={{ width:'200px', height:'200px', margin:'0 auto 20px', background:'#fff', border:'1px solid #E5E7EB', borderRadius:'16px', padding:'12px', display:'grid', gridTemplateColumns:'repeat(10,1fr)', gap:'2px' }}>
-              {Array.from({length:100}).map((_,i) => (
-                <div key={i} style={{ background: Math.random()>0.5 ? '#111' : '#fff', borderRadius:'1px' }}/>
-              ))}
-            </div>
-            <div style={{ display:'flex', alignItems:'center', gap:'6px', justifyContent:'center', fontSize:'12px', color:'#888', marginBottom:'20px' }}>
-              <RefreshCw size={12}/> Code refreshes in 45s
-            </div>
-            <motion.button whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }}
-              onClick={() => setScanned(true)}
-              style={{ width:'100%', padding:'12px', borderRadius:'10px', background:'#000', border:'none', color:'#fff', fontSize:'14px', fontWeight:600, cursor:'pointer', fontFamily:'inherit' }}>
-              Simulate QR Scan ✓
-            </motion.button>
-          </>
-        ) : (
-          <motion.div initial={{scale:0.8,opacity:0}} animate={{scale:1,opacity:1}}>
-            <div style={{ width:'72px', height:'72px', borderRadius:'50%', margin:'0 auto 16px', background:'#F5F3F0', display:'flex', alignItems:'center', justifyContent:'center' }}>
-              <Check size={36} color='#7670C5'/>
-            </div>
-            <div style={{ fontSize:'18px', fontWeight:700, color:'#111', marginBottom:'8px' }}>Session Linked!</div>
-            <div style={{ fontSize:'13px', color:'#888', marginBottom:'24px', lineHeight:'1.6' }}>
-              WhatsApp for {agent.agentName} is now connected and receiving messages.
-            </div>
-            <button onClick={onClose} style={{ width:'100%', padding:'12px', borderRadius:'10px', background:'#F3F2FF', border:'1px solid #E5E7EB', color:'#7670C5', fontSize:'14px', cursor:'pointer', fontFamily:'inherit', fontWeight:500 }}>Close</button>
-          </motion.div>
-        )}
-      </motion.div>
-    </motion.div>
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 14 }}>
+      {[1, 2, 3, 4].map(i => (
+        <div key={i} style={{
+          width: 3,
+          background: active ? '#25D366' : '#E5E7EB',
+          height: i * 3 + 2, borderRadius: 1,
+        }} />
+      ))}
+    </div>
   )
 }
 
-function SessionCard({ session, i, onQR }) {
-  const label = SESSION_LABEL[session.status]
+const waThreads = conversations.filter(c => c.channel === 'whatsapp')
 
-  return (
-    <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:i*0.07 }}
-      whileHover={{ y:-2 }}
-      style={{ background:'#F5F3F0', border:'1px solid #E8E3DC', borderRadius:'16px', padding:'20px 22px', display:'flex', flexDirection:'column', gap:'14px' }}>
+export default function WhatsAppModule({ role = 'admin' }) {
+  const isAdmin = role === 'admin'
+  const [selectedAgent, setSelectedAgent] = useState(null)
+  const [selected, setSelected] = useState(null)
+  const [message, setMessage]   = useState('')
+  const [search, setSearch]     = useState('')
 
-      {/* Header */}
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-        <div style={{ display:'flex', alignItems:'center', gap:'12px' }}>
-          <AV name={session.agentName} size={42}/>
-          <div>
-            <div style={{ fontSize:'14px', fontWeight:600, color:'#111' }}>{session.agentName}</div>
-            <div style={{ fontSize:'12px', color:'#888' }}>{session.number}</div>
-          </div>
-        </div>
-        {/* All status — same gray pill, no colors */}
-        <span style={{ fontSize:'11px', padding:'4px 10px', borderRadius:'20px', background:'#E8E3DC', color:'#555', border:'1px solid #DDD8D0' }}>
-          {label}
-        </span>
-      </div>
+  const agentThreads = isAdmin && selectedAgent
+    ? waThreads.filter(c => c.agentId === selectedAgent.id)
+    : isAdmin ? [] : waThreads
 
-      {/* Stats */}
-      <div style={{ display:'flex', background:'#EDE8E3', borderRadius:'10px', overflow:'hidden', border:'1px solid #DDD8D0' }}>
-        {[
-          { label:'Messages', value:session.messages },
-          { label:'Last Sync', value:session.lastSync },
-          { label:'Battery',   value:`${session.battery}%` },
-        ].map((s,idx) => (
-          <div key={idx} style={{ flex:1, padding:'10px 12px', textAlign:'center', borderRight:idx<2?'1px solid #DDD8D0':'none' }}>
-            <div style={{ fontSize:'14px', fontWeight:700, color:'#111' }}>{s.value}</div>
-            <div style={{ fontSize:'10px', color:'#888', marginTop:'2px' }}>{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Actions — all purple style */}
-      <div style={{ display:'flex', gap:'8px' }}>
-        {session.status === 'connected' ? (
-          <>
-            <button style={{ flex:1, padding:'8px', borderRadius:'8px', fontSize:'12px', background:'#EDE8E3', border:'1px solid #DDD8D0', color:'#555', cursor:'pointer', fontFamily:'inherit', fontWeight:500 }}>
-              Disconnect
-            </button>
-            <button style={{ flex:1, padding:'8px', borderRadius:'8px', fontSize:'12px', background:'#F3F2FF', border:'1px solid #E8E3DC', color:'#7670C5', cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', gap:'4px', justifyContent:'center' }}>
-              <RefreshCw size={11}/> Refresh
-            </button>
-          </>
-        ) : (
-          <motion.button whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }}
-            onClick={() => onQR(session)}
-            style={{ flex:1, padding:'9px', borderRadius:'8px', fontSize:'12px', background:'linear-gradient(135deg,#7670C5,#D18EE2)', border:'none', color:'#fff', cursor:'pointer', fontFamily:'inherit', display:'flex', alignItems:'center', gap:'6px', justifyContent:'center', fontWeight:500 }}>
-            <QrCode size={12}/> Scan QR to Reconnect
-          </motion.button>
-        )}
-      </div>
-    </motion.div>
+  const filtered = agentThreads.filter(c =>
+    c.leadName.toLowerCase().includes(search.toLowerCase()) ||
+    c.lastMessage.toLowerCase().includes(search.toLowerCase())
   )
-}
-
-export default function WhatsAppModule() {
-  const [qrAgent, setQrAgent] = useState(null)
-
-  const connected     = whatsappSessions.filter(s=>s.status==='connected').length
-  const disconnected  = whatsappSessions.filter(s=>s.status==='disconnected').length
-  const totalMessages = whatsappSessions.reduce((s,ws)=>s+ws.messages, 0)
-  const waConvs       = conversations.filter(c=>c.channel==='whatsapp')
 
   return (
     <div>
       {/* Header */}
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'24px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div>
-          <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'4px' }}>
-            <h2 style={{ fontSize:'22px', fontWeight:700, color:'#111' }}>WhatsApp Multi-Agent</h2>
-            <span style={{ fontSize:'11px', padding:'3px 10px', borderRadius:'20px', background:'#F5F5F5', color:'#666', border:'1px solid #E5E7EB' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+            <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111' }}>WhatsApp Multi-Agent</h2>
+            <span style={{ fontSize: 11, padding: '3px 10px', borderRadius: 20, background: '#F5F5F5', color: '#666', border: '1px solid #E5E7EB' }}>
               Baileys Engine
             </span>
           </div>
-          <p style={{ fontSize:'13.5px', fontWeight:500, color:'#4A4658' }}>Server-side WhatsApp sessions via QR linking · Each agent uses their company SIM</p>
+          <p style={{ fontSize: 13.5, fontWeight: 500, color: '#374151' }}>
+            Server-side WhatsApp sessions via QR linking · Each agent uses their company SIM
+          </p>
         </div>
-        {/* CTA — black pill like rest of app */}
-        <motion.button whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }}
-          style={{ padding:'9px 20px', borderRadius:'9999px', background:'#000', border:'none', color:'#fff', fontSize:'13px', cursor:'pointer', fontFamily:'inherit', fontWeight:500, display:'flex', alignItems:'center', gap:'6px' }}>
-          <QrCode size={14}/> Link New Session
-        </motion.button>
       </div>
 
-      {/* Stat cards — all same purple icon, same warm-stone card */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'12px', marginBottom:'24px' }}>
-        {[
-          { label:'Active Sessions',  value:`${connected}/${whatsappSessions.length}`, icon:Wifi          },
-          { label:'Disconnected',     value:disconnected,                               icon:WifiOff       },
-          { label:'Messages Today',   value:totalMessages,                              icon:MessageCircle },
-          { label:'AI Conversations', value:waConvs.filter(c=>c.status==='ai').length, icon:Zap           },
-        ].map((s,i) => {
-          const Icon = s.icon
-          return (
-            <motion.div key={i} initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:i*0.06}}
-              style={{ background:'#F5F3F0', border:'1px solid #E8E3DC', borderRadius:'14px', padding:'16px 20px', display:'flex', alignItems:'center', gap:'14px' }}>
-              <div style={{ width:'36px', height:'36px', borderRadius:'10px', background:'#E8E3DC', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-                <Icon size={18} color='#7670C5'/>
+      {/* Agent session status */}
+      <div style={{
+        background: '#fff', border: '1px solid #E5E7EB',
+        borderRadius: 16, padding: '20px 24px', marginBottom: 20,
+        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+          <Wifi size={16} color='#C8A75B' />
+          <span style={{ fontSize: 13, fontWeight: 600, color: '#111' }}>Agent Session Status</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginLeft: 'auto' }}>
+            <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#25D366' }} />
+            <span style={{ fontSize: 12, color: '#25D366' }}>
+              {whatsappSessions.filter(s => s.status === 'connected').length} of {whatsappSessions.length} connected
+            </span>
+          </div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 10 }}>
+          {whatsappSessions.map((s, i) => (
+            <motion.div
+              key={s.id}
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
+              style={{
+                background: s.status === 'connected' ? '#F0FDF4' : s.status === 'connecting' ? '#FFFBEB' : '#F8F8F8',
+                border: `1px solid ${s.status === 'connected' ? '#BBF7D0' : s.status === 'connecting' ? '#FDE68A' : '#E5E7EB'}`,
+                borderRadius: 12, padding: '12px 14px',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                <span style={{
+                  fontSize: 11, fontWeight: 600,
+                  color: s.status === 'connected' ? '#166534' : s.status === 'connecting' ? '#92400E' : '#888',
+                }}>
+                  {s.agentName.split(' ')[0]}
+                </span>
+                <StatusDot active={s.status === 'connected'} />
               </div>
-              <div>
-                <div style={{ fontSize:'22px', fontWeight:700, color:'#111' }}>{s.value}</div>
-                <div style={{ fontSize:'11px', color:'#888' }}>{s.label}</div>
+              <div style={{ fontSize: 10, color: '#888', marginBottom: 6 }}>{s.number.slice(-7)}</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: s.status === 'connected' ? '#111' : '#888' }}>
+                {s.status === 'connected' ? `${s.messages} msgs` : s.status === 'connecting' ? 'Connecting…' : 'Offline'}
               </div>
             </motion.div>
-          )
-        })}
+          ))}
+        </div>
       </div>
 
-      {/* How it works — neutral stone */}
-      <div style={{ background:'#F5F3F0', border:'1px solid #E8E3DC', borderRadius:'14px', padding:'16px 24px', marginBottom:'24px', display:'flex', gap:'32px', alignItems:'center' }}>
-        {[
-          { step:'1', label:'Agent scans QR',   desc:'One-time QR scan inside CRM app'       },
-          { step:'2', label:'Session goes live', desc:'Server maintains persistent connection' },
-          { step:'3', label:'All messages sync', desc:'Appears in Unified Inbox instantly'    },
-          { step:'4', label:'Admin sees all',    desc:'Full oversight across all agents'      },
-        ].map((s,i) => (
-          <div key={i} style={{ display:'flex', alignItems:'center', gap:'12px', flex:1 }}>
-            <div style={{ width:'32px', height:'32px', borderRadius:'50%', flexShrink:0, background:'#E8E3DC', border:'1px solid #DDD8D0', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'13px', fontWeight:700, color:'#7670C5' }}>
-              {s.step}
+      {/* Side-by-side layout */}
+      <div style={{ display: 'flex', height: 440, gap: 16 }}>
+
+        {/* Thread list */}
+        <div style={{
+          width: 280, flexShrink: 0,
+          background: '#fff', border: '1px solid #E5E7EB',
+          borderRadius: 16, overflow: 'hidden', display: 'flex', flexDirection: 'column',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+        }}>
+          {isAdmin ? (
+            <AgentPickerPanel
+              selectedAgent={selectedAgent}
+              onSelect={a => { setSelectedAgent(a); setSelected(null) }}
+              onBack={() => { setSelectedAgent(null); setSelected(null) }}
+              getCount={a => waThreads.filter(c => c.agentId === a.id).length}
+              countLabel="chats"
+            >
+              {/* Thread list shown after agent is selected */}
+              <div style={{ padding: '8px 12px', borderBottom: '1px solid #F0F0F0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#F8F8F8', border: '1px solid #E5E7EB', borderRadius: 8, padding: '6px 10px' }}>
+                  <Search size={13} color='#888' />
+                  <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." style={{ background: 'none', border: 'none', outline: 'none', color: '#111', fontSize: 12, fontFamily: 'inherit', width: '100%' }} />
+                </div>
+              </div>
+              <div style={{ flex: 1, overflowY: 'auto' }}>
+                {filtered.map(conv => (
+                  <div key={conv.id} onClick={() => setSelected(conv)}
+                    style={{ padding: '12px 14px', cursor: 'pointer', background: selected?.id === conv.id ? '#FBF6EC' : 'transparent', borderLeft: selected?.id === conv.id ? '2px solid #C8A75B' : '2px solid transparent', borderBottom: '1px solid #F5F5F5', transition: 'background 0.15s' }}
+                    onMouseEnter={e => { if (selected?.id !== conv.id) e.currentTarget.style.background = '#FAFAFA' }}
+                    onMouseLeave={e => { if (selected?.id !== conv.id) e.currentTarget.style.background = 'transparent' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <AV name={conv.leadName} size={30} />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: '#111' }}>{conv.leadName}</span>
+                          <span style={{ fontSize: 10, color: '#888' }}>{conv.time}</span>
+                        </div>
+                        <div style={{ fontSize: 11, color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{conv.lastMessage}</div>
+                      </div>
+                    </div>
+                    {conv.unread > 0 && <div style={{ display: 'inline-block', marginTop: 2, background: '#25D366', color: '#fff', fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 10 }}>{conv.unread} new</div>}
+                  </div>
+                ))}
+              </div>
+            </AgentPickerPanel>
+          ) : (
+            <>
+              <div style={{ padding: 12, borderBottom: '1px solid #F0F0F0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#F8F8F8', border: '1px solid #E5E7EB', borderRadius: 8, padding: '7px 12px' }}>
+                  <Search size={13} color='#888' />
+                  <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." style={{ background: 'none', border: 'none', outline: 'none', color: '#111', fontSize: 12, fontFamily: 'inherit', width: '100%' }} />
+                </div>
+              </div>
+              <div style={{ flex: 1, overflowY: 'auto' }}>
+                {filtered.map(conv => (
+                  <div key={conv.id} onClick={() => setSelected(conv)}
+                    style={{ padding: '12px 14px', cursor: 'pointer', background: selected?.id === conv.id ? '#FBF6EC' : 'transparent', borderLeft: selected?.id === conv.id ? '2px solid #C8A75B' : '2px solid transparent', borderBottom: '1px solid #F5F5F5', transition: 'background 0.15s' }}
+                    onMouseEnter={e => { if (selected?.id !== conv.id) e.currentTarget.style.background = '#FAFAFA' }}
+                    onMouseLeave={e => { if (selected?.id !== conv.id) e.currentTarget.style.background = 'transparent' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <AV name={conv.leadName} size={30} />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: '#111' }}>{conv.leadName}</span>
+                          <span style={{ fontSize: 10, color: '#888' }}>{conv.time}</span>
+                        </div>
+                        <div style={{ fontSize: 11, color: '#888', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{conv.lastMessage}</div>
+                      </div>
+                    </div>
+                    {conv.unread > 0 && <div style={{ display: 'inline-block', marginTop: 2, background: '#25D366', color: '#fff', fontSize: 10, fontWeight: 700, padding: '1px 7px', borderRadius: 10 }}>{conv.unread} new</div>}
+                  </div>
+                ))}
+              </div>
+              <div style={{ padding: 10, borderTop: '1px solid #F0F0F0' }}>
+                <button style={{ width: '100%', padding: 8, borderRadius: 8, fontSize: 12, background: '#FBF6EC', border: '1px solid #E5E7EB', color: '#C8A75B', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
+                  <Plus size={12} /> New Chat
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Chat panel */}
+        <div style={{
+          flex: 1, background: '#fff', border: '1px solid #E5E7EB',
+          borderRadius: 16, display: 'flex', flexDirection: 'column', overflow: 'hidden',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+        }}>
+          {selected ? (
+            <>
+              {/* Chat header */}
+              <div style={{ padding: '14px 18px', borderBottom: '1px solid #F0F0F0', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <AV name={selected.leadName} size={36} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: '#111' }}>{selected.leadName}</div>
+                  <div style={{ fontSize: 11, color: '#888' }}>
+                    via {selected.agentName} · {whatsappSessions.find(s => s.agentId === selected.agentId)?.number || 'WhatsApp'}
+                  </div>
+                </div>
+                <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+                  <span style={{
+                    fontSize: 11, padding: '3px 10px', borderRadius: 20,
+                    background: '#DCFCE7', color: '#166534', border: '1px solid #BBF7D0', fontWeight: 500,
+                  }}>WhatsApp</span>
+                </div>
+              </div>
+
+              {/* Messages */}
+              <div style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 8, background: '#FAFAFA' }}>
+                {selected.messages?.map((msg, i) => {
+                  if (msg.type === 'document') return (
+                    <div key={i} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                      <div style={{
+                        background: '#C8A75B', borderRadius: '10px 10px 3px 10px',
+                        padding: '10px 14px', maxWidth: '65%',
+                        display: 'flex', alignItems: 'center', gap: 8,
+                      }}>
+                        <FileText size={16} color='#fff' />
+                        <div>
+                          <div style={{ fontSize: 12, fontWeight: 600, color: '#fff' }}>{msg.fileName}</div>
+                          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.7)' }}>{msg.fileSize}</div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                  return (
+                    <div key={i} style={{ display: 'flex', justifyContent: msg.from === 'lead' ? 'flex-start' : 'flex-end' }}>
+                      <div style={{
+                        background: msg.from === 'lead' ? '#fff' : '#C8A75B',
+                        border: msg.from === 'lead' ? '1px solid #E5E7EB' : 'none',
+                        borderRadius: msg.from === 'lead' ? '10px 10px 10px 3px' : '10px 10px 3px 10px',
+                        padding: '9px 13px', maxWidth: '65%',
+                        fontSize: 13, color: msg.from === 'lead' ? '#111' : '#fff', lineHeight: 1.5,
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.06)',
+                      }}>
+                        {msg.text}
+                        <div style={{ fontSize: 10, color: msg.from === 'lead' ? '#888' : 'rgba(255,255,255,0.65)', marginTop: 3, textAlign: 'right' }}>{msg.time}</div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Reply box */}
+              <div style={{ padding: 12, borderTop: '1px solid #F0F0F0', display: 'flex', gap: 8, background: '#fff' }}>
+                <input
+                  value={message}
+                  onChange={e => setMessage(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && setMessage('')}
+                  placeholder="Type a WhatsApp message…"
+                  style={{
+                    flex: 1, background: '#F8F8F8', border: '1px solid #E5E7EB',
+                    borderRadius: 8, padding: '10px 14px',
+                    color: '#111', fontSize: 13, fontFamily: 'inherit', outline: 'none',
+                  }}
+                />
+                <motion.button
+                  whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                  onClick={() => setMessage('')}
+                  style={{
+                    padding: '10px 20px', borderRadius: 8,
+                    background: 'linear-gradient(135deg,#C8A75B,#DDB96A)',
+                    border: 'none', color: '#fff', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    fontSize: 13, fontFamily: 'inherit', fontWeight: 500,
+                  }}
+                >
+                  <Send size={13} /> Send
+                </motion.button>
+              </div>
+            </>
+          ) : (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
+              <MessageCircle size={36} color='#E5E7EB' style={{ marginBottom: 8 }} />
+              <div style={{ fontSize: 13 }}>{isAdmin && !selectedAgent ? 'Select an agent to view chats' : 'Select a conversation'}</div>
             </div>
-            <div>
-              <div style={{ fontSize:'12px', fontWeight:600, color:'#111' }}>{s.label}</div>
-              <div style={{ fontSize:'11px', color:'#888' }}>{s.desc}</div>
-            </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
-
-      {/* Sessions grid */}
-      <div style={{ fontSize:'15px', fontWeight:600, color:'#111', marginBottom:'14px' }}>Agent Sessions</div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'14px' }}>
-        {whatsappSessions.map((s,i) => (
-          <SessionCard key={s.id} session={s} i={i} onQR={setQrAgent} />
-        ))}
-      </div>
-
-      <AnimatePresence>
-        {qrAgent && <QRModal agent={qrAgent} onClose={() => setQrAgent(null)} />}
-      </AnimatePresence>
     </div>
   )
 }

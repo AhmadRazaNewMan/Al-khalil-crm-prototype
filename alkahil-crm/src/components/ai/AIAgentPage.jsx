@@ -4,7 +4,7 @@ import {
   Bot, Brain, Upload, FileText, Search, Sparkles, CheckCircle,
   AlertCircle, Clock, ArrowRight, RefreshCw, Zap, BarChart2,
   MessageCircle, MessageSquare, Phone, ChevronDown, ChevronUp,
-  X, User, Star, Layers, Hash,
+  X, User, Star, Layers, Hash, Calendar, Eye,
 } from 'lucide-react'
 import {
   knowledgeBaseDocuments, aiSessionStats, aiRecentSessions,
@@ -13,9 +13,9 @@ import {
 import CompanyFooter from '../layout/CompanyFooter'
 
 // ─── shared design tokens ───────────────────────────────────────────
-const PURPLE = '#7670C5'
-const PURPLE_LIGHT = '#F3F2FF'
-const PINK = '#D18EE2'
+const PURPLE = '#C8A75B'
+const PURPLE_LIGHT = '#FBF6EC'
+const PINK = '#1E3A5F'
 const GREEN = '#5EA538'
 const ORANGE = '#E08C3A'
 const RED = '#CA492D'
@@ -35,12 +35,12 @@ const typeColors = {
   property: { bg: '#EFF6FF', color: '#1D4ED8', label: 'Property' },
   faq:      { bg: '#F0FDF4', color: '#166534', label: 'FAQ'      },
   policy:   { bg: '#FFF7ED', color: '#9A3412', label: 'Policy'   },
-  pricing:  { bg: '#FDF4FF', color: '#7E22CE', label: 'Pricing'  },
+  pricing:  { bg: '#FDF4FF', color: '#C8A75B', label: 'Pricing'  },
   report:   { bg: '#F8FAFC', color: '#475569', label: 'Report'   },
 }
 
 const channelIcon = { whatsapp: MessageCircle, sms: MessageSquare, call: Phone }
-const channelColor = { whatsapp: '#25D366', sms: '#4C6EE6', call: '#FF7759' }
+const channelColor = { whatsapp: '#25D366', sms: '#1E3A5F', call: '#FF7759' }
 
 function StatCard({ icon: Icon, label, value, sub, accent }) {
   return (
@@ -109,13 +109,13 @@ function KnowledgeBaseTab() {
           { label: 'Topics Covered', value: knowledgeBaseDocuments.flatMap(d => d.topics).filter((v, i, a) => a.indexOf(v) === i).length, icon: Hash },
         ].map((s, i) => (
           <div key={i} style={{
-            flex: 1, background: PURPLE_LIGHT, border: `1px solid #E9D5FF`,
+            flex: 1, background: PURPLE_LIGHT, border: `1px solid #EDD9A3`,
             borderRadius: 12, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 12,
           }}>
             <s.icon size={16} color={PURPLE} />
             <div>
               <div style={{ fontSize: 20, fontWeight: 700, color: PURPLE }}>{s.value}</div>
-              <div style={{ fontSize: 11, color: '#6D28D9' }}>{s.label}</div>
+              <div style={{ fontSize: 11, color: '#1E3A5F' }}>{s.label}</div>
             </div>
           </div>
         ))}
@@ -231,7 +231,7 @@ function KnowledgeBaseTab() {
               <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
                 <button style={{
                   padding: '5px 12px', borderRadius: 8, fontSize: 11, cursor: 'pointer',
-                  background: PURPLE_LIGHT, border: `1px solid #E9D5FF`, color: PURPLE,
+                  background: PURPLE_LIGHT, border: `1px solid #EDD9A3`, color: PURPLE,
                   fontFamily: 'inherit', fontWeight: 500,
                 }}>View</button>
                 <button style={{
@@ -297,7 +297,7 @@ function KnowledgeBaseTab() {
                     disabled={querying || !testQuery.trim()}
                     style={{
                       padding: '10px 20px', borderRadius: 10, border: 'none', fontFamily: 'inherit',
-                      background: querying ? '#E9D5FF' : `linear-gradient(135deg,${PURPLE},${PINK})`,
+                      background: querying ? '#EDD9A3' : `linear-gradient(135deg,${PURPLE},${PINK})`,
                       color: querying ? PURPLE : '#fff', fontSize: 13, fontWeight: 500, cursor: 'pointer',
                       display: 'flex', alignItems: 'center', gap: 8,
                     }}
@@ -329,17 +329,17 @@ function KnowledgeBaseTab() {
                     >
                       {/* Answer */}
                       <div style={{
-                        background: PURPLE_LIGHT, border: `1px solid #E9D5FF`,
+                        background: PURPLE_LIGHT, border: `1px solid #EDD9A3`,
                         borderRadius: 12, padding: '16px 18px', marginBottom: 12,
                       }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                           <Bot size={15} color={PURPLE} />
                           <span style={{ fontSize: 12, fontWeight: 600, color: PURPLE }}>AI Answer</span>
-                          <span style={{ fontSize: 10, color: '#6D28D9', marginLeft: 'auto' }}>
+                          <span style={{ fontSize: 10, color: '#1E3A5F', marginLeft: 'auto' }}>
                             {Math.round(ragResult.confidence * 100)}% confidence · {ragResult.responseMs}ms
                           </span>
                         </div>
-                        <div style={{ fontSize: 13, color: '#1E1B4B', lineHeight: 1.65 }}>{ragResult.answer}</div>
+                        <div style={{ fontSize: 13, color: '#0B1F3A', lineHeight: 1.65 }}>{ragResult.answer}</div>
                       </div>
 
                       {/* Sources */}
@@ -383,10 +383,111 @@ function KnowledgeBaseTab() {
   )
 }
 
+// ─── SESSION PREVIEW MODAL ──────────────────────────────────────────
+function SessionPreviewModal({ session, onClose }) {
+  const ChanIcon = channelIcon[session.channel] || MessageCircle
+  const isCall = session.channel === 'call'
+  const outcomeColor = { resolved: GREEN, handoff: ORANGE }
+  const outcomeLabel = { resolved: 'Resolved', handoff: 'Handed Off' }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      onClick={onClose}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 20 }}
+    >
+      <motion.div
+        initial={{ scale: 0.94, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.94, opacity: 0 }}
+        onClick={e => e.stopPropagation()}
+        style={{ background: '#fff', borderRadius: 18, width: 520, maxHeight: '78vh', display: 'flex', flexDirection: 'column', boxShadow: '0 24px 64px rgba(0,0,0,0.18)' }}
+      >
+        {/* Header */}
+        <div style={{ padding: '18px 22px', borderBottom: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 38, height: 38, borderRadius: 10, background: PURPLE_LIGHT, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <ChanIcon size={16} color={channelColor[session.channel]} />
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: TEXT }}>{session.lead}</div>
+            <div style={{ fontSize: 11, color: MUTED, display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
+              <span style={{ textTransform: 'capitalize' }}>{session.channel}</span>
+              <span>·</span>
+              <Calendar size={10} />
+              <span>{session.date}</span>
+              <span>·</span>
+              <span>{session.start} – {session.end}</span>
+            </div>
+          </div>
+          <div style={{
+            fontSize: 10, fontWeight: 600, padding: '3px 10px', borderRadius: 6,
+            background: session.outcome === 'resolved' ? '#F0FDF4' : '#FFF7ED',
+            color: outcomeColor[session.outcome],
+            border: `1px solid ${session.outcome === 'resolved' ? '#BBF7D0' : '#FED7AA'}`,
+          }}>
+            {outcomeLabel[session.outcome]}
+          </div>
+          <button onClick={onClose} style={{ width: 28, height: 28, borderRadius: 8, background: '#F5F5F5', border: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
+            <X size={13} color={MUTED} />
+          </button>
+        </div>
+
+        {/* Label */}
+        <div style={{ padding: '10px 22px 0', display: 'flex', alignItems: 'center', gap: 7 }}>
+          <Bot size={12} color={PURPLE} />
+          <span style={{ fontSize: 11, fontWeight: 600, color: PURPLE }}>
+            {isCall ? 'Call Transcript · AI Agent' : 'Chat Log · AI Agent'}
+          </span>
+          <span style={{ fontSize: 10, color: MUTED, marginLeft: 'auto' }}>{session.messages} messages</span>
+        </div>
+
+        {/* Chat log */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '12px 22px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {session.chatLog?.map((msg, i) => {
+            const isAI = msg.speaker === 'AI'
+            return (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: isAI ? 'flex-end' : 'flex-start', gap: 3 }}>
+                <div style={{ fontSize: 10, color: MUTED, fontWeight: 600, marginBottom: 1 }}>
+                  {isAI ? '🤖 AI Agent' : `👤 ${session.lead}`}
+                </div>
+                <div style={{
+                  maxWidth: '78%', padding: '9px 14px', borderRadius: isAI ? '12px 12px 3px 12px' : '12px 12px 12px 3px',
+                  background: isAI ? `linear-gradient(135deg,${PURPLE},${PINK})` : '#F5F5F5',
+                  color: isAI ? '#fff' : TEXT, fontSize: 13, lineHeight: 1.55,
+                  border: isAI ? 'none' : `1px solid ${BORDER}`,
+                }}>
+                  {msg.text}
+                </div>
+                <div style={{ fontSize: 10, color: MUTED }}>{msg.time}</div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Summary footer */}
+        <div style={{ padding: '12px 22px', borderTop: `1px solid ${BORDER}`, background: PURPLE_LIGHT, borderRadius: '0 0 18px 18px' }}>
+          <div style={{ fontSize: 10, fontWeight: 600, color: PURPLE, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>AI Summary</div>
+          <div style={{ fontSize: 12, color: '#0B1F3A', lineHeight: 1.5 }}>{session.summary}</div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 // ─── ACTIVE SESSIONS TAB ────────────────────────────────────────────
 function ActiveSessionsTab() {
   const outcomeColor = { resolved: GREEN, handoff: ORANGE }
   const outcomeLabel = { resolved: 'Resolved', handoff: 'Handed Off' }
+  const [filterDate, setFilterDate] = useState('2026-05-14')
+  const [previewSession, setPreviewSession] = useState(null)
+
+  const dateOptions = [
+    { value: 'all',        label: 'All Dates' },
+    { value: '2026-05-14', label: 'Today · May 14' },
+    { value: '2026-05-13', label: 'Yesterday · May 13' },
+  ]
+
+  const filtered = filterDate === 'all'
+    ? aiRecentSessions
+    : aiRecentSessions.filter(s => s.date === filterDate)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -400,7 +501,7 @@ function ActiveSessionsTab() {
         <div style={{ position: 'relative' }}>
           <div style={{
             width: 42, height: 42, borderRadius: 12,
-            background: 'linear-gradient(135deg,#7670C5,#D18EE2)',
+            background: 'linear-gradient(135deg,#C8A75B,#DDB96A)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <Bot size={20} color="#fff" />
@@ -422,22 +523,41 @@ function ActiveSessionsTab() {
 
       {/* Sessions table */}
       <div style={{ ...card, padding: 0, overflow: 'hidden' }}>
-        <div style={{ padding: '14px 20px', borderBottom: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: TEXT }}>Recent AI Sessions — Today</span>
-          <span style={{ fontSize: 11, color: MUTED }}>{aiRecentSessions.length} sessions</span>
+        {/* Table header with date filter */}
+        <div style={{ padding: '14px 20px', borderBottom: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <Calendar size={14} color={PURPLE} />
+          <span style={{ fontSize: 13, fontWeight: 600, color: TEXT }}>AI Sessions</span>
+          <div style={{ display: 'flex', gap: 5, marginLeft: 4 }}>
+            {dateOptions.map(opt => (
+              <button
+                key={opt.value}
+                onClick={() => setFilterDate(opt.value)}
+                style={{
+                  padding: '5px 12px', borderRadius: 20, fontSize: 11, fontWeight: 500, cursor: 'pointer',
+                  fontFamily: 'inherit', transition: 'all 0.15s',
+                  background: filterDate === opt.value ? PURPLE : '#fff',
+                  border: `1px solid ${filterDate === opt.value ? PURPLE : BORDER}`,
+                  color: filterDate === opt.value ? '#fff' : MUTED,
+                }}
+              >{opt.label}</button>
+            ))}
+          </div>
+          <span style={{ fontSize: 11, color: MUTED, marginLeft: 'auto' }}>{filtered.length} session{filtered.length !== 1 ? 's' : ''}</span>
         </div>
 
-        {/* Header row */}
+        {/* Column headers */}
         <div style={{
-          display: 'grid', gridTemplateColumns: '1fr 90px 80px 90px 70px 1fr',
+          display: 'grid', gridTemplateColumns: '1fr 90px 90px 60px 80px 1fr 76px',
           padding: '10px 20px', background: ROW_BG, borderBottom: `1px solid ${BORDER}`,
         }}>
-          {['Lead', 'Channel', 'Duration', 'Messages', 'Outcome', 'Summary'].map(h => (
+          {['Lead', 'Channel', 'Duration', 'Msgs', 'Outcome', 'Summary', ''].map(h => (
             <div key={h} style={{ fontSize: 10, fontWeight: 600, color: MUTED, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</div>
           ))}
         </div>
 
-        {aiRecentSessions.map((s, i) => {
+        {filtered.length === 0 ? (
+          <div style={{ padding: '40px 0', textAlign: 'center', color: MUTED, fontSize: 13 }}>No sessions found for this date</div>
+        ) : filtered.map((s, i) => {
           const ChanIcon = channelIcon[s.channel] || MessageCircle
           return (
             <motion.div
@@ -446,8 +566,8 @@ function ActiveSessionsTab() {
               animate={{ opacity: 1 }}
               transition={{ delay: i * 0.04 }}
               style={{
-                display: 'grid', gridTemplateColumns: '1fr 90px 80px 90px 70px 1fr',
-                padding: '12px 20px', borderBottom: i < aiRecentSessions.length - 1 ? `1px solid ${BORDER}` : 'none',
+                display: 'grid', gridTemplateColumns: '1fr 90px 90px 60px 80px 1fr 76px',
+                padding: '12px 20px', borderBottom: i < filtered.length - 1 ? `1px solid ${BORDER}` : 'none',
                 alignItems: 'center', transition: 'background 0.15s',
               }}
               onMouseEnter={e => e.currentTarget.style.background = ROW_BG}
@@ -459,7 +579,7 @@ function ActiveSessionsTab() {
                 <span style={{ fontSize: 12, color: MUTED, textTransform: 'capitalize' }}>{s.channel}</span>
               </div>
               <div style={{ fontSize: 12, color: MUTED }}>{s.start} – {s.end}</div>
-              <div style={{ fontSize: 12, color: MUTED }}>{s.messages} msgs</div>
+              <div style={{ fontSize: 12, color: MUTED }}>{s.messages}</div>
               <div style={{
                 fontSize: 10, fontWeight: 600, padding: '3px 8px', borderRadius: 6,
                 background: s.outcome === 'resolved' ? '#F0FDF4' : '#FFF7ED',
@@ -468,11 +588,31 @@ function ActiveSessionsTab() {
               }}>
                 {outcomeLabel[s.outcome]}
               </div>
-              <div style={{ fontSize: 11, color: MUTED, paddingLeft: 8 }}>{s.summary}</div>
+              <div style={{ fontSize: 11, color: MUTED, paddingLeft: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.summary}</div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                  onClick={() => setPreviewSession(s)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 4,
+                    padding: '5px 11px', borderRadius: 8, fontSize: 11, fontWeight: 500,
+                    background: PURPLE_LIGHT, border: `1px solid #EDD9A3`,
+                    color: PURPLE, cursor: 'pointer', fontFamily: 'inherit',
+                  }}
+                >
+                  <Eye size={11} /> Preview
+                </motion.button>
+              </div>
             </motion.div>
           )
         })}
       </div>
+
+      <AnimatePresence>
+        {previewSession && (
+          <SessionPreviewModal session={previewSession} onClose={() => setPreviewSession(null)} />
+        )}
+      </AnimatePresence>
 
       {/* RAG source usage */}
       <div style={{ ...card }}>
@@ -624,9 +764,9 @@ function HandoffQueueTab() {
                     <div>
                       <div style={{ fontSize: 11, fontWeight: 600, color: MUTED, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>AI Summary</div>
                       <div style={{
-                        background: PURPLE_LIGHT, border: '1px solid #E9D5FF',
+                        background: PURPLE_LIGHT, border: '1px solid #EDD9A3',
                         borderRadius: 10, padding: '12px 16px',
-                        fontSize: 13, color: '#1E1B4B', lineHeight: 1.65,
+                        fontSize: 13, color: '#0B1F3A', lineHeight: 1.65,
                       }}>
                         <Bot size={13} color={PURPLE} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} />
                         {item.aiSummary}
@@ -685,10 +825,10 @@ function HandoffQueueTab() {
                       <div style={{
                         display: 'flex', alignItems: 'center', gap: 12,
                         padding: '12px 16px', background: '#F8F5FF',
-                        border: '1px solid #E9D5FF', borderRadius: 10,
+                        border: '1px solid #EDD9A3', borderRadius: 10,
                       }}>
                         <Star size={14} color={PURPLE} />
-                        <span style={{ fontSize: 12, color: '#5B21B6' }}>AI suggests assigning to </span>
+                        <span style={{ fontSize: 12, color: '#1E3A5F' }}>AI suggests assigning to </span>
                         <img src={suggestedAgent.photo} alt={suggestedAgent.name}
                           style={{ width: 24, height: 24, borderRadius: '50%', objectFit: 'cover' }} />
                         <span style={{ fontSize: 12, fontWeight: 600, color: PURPLE }}>{suggestedAgent.name}</span>

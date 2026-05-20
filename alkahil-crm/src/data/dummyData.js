@@ -124,17 +124,80 @@ export const conversations = [
       { id: 'm1', from: 'system', text: 'Outbound call to +971559876543', time: '11:00', type: 'call', duration: 'No answer', recording: false },
     ]
   },
+  {
+    id: 'c7', leadId: 'l8', leadName: 'Li Wei', channel: 'whatsapp',
+    lastMessage: 'Can we schedule a virtual tour this week?', time: '10:30', unread: 1,
+    status: 'active', agentId: 'a2', agentName: 'Omar Farooq',
+    messages: [
+      { id: 'm1', from: 'lead', text: 'Hello! I am interested in the Emirates Hills villa for AED 7M.', time: '09:50', type: 'text' },
+      { id: 'm2', from: 'agent', text: 'Hi Li Wei! Great choice — it is a stunning property. Are you looking to invest or for personal use?', time: '09:52', type: 'text' },
+      { id: 'm3', from: 'lead', text: 'Investment primarily. What is the expected rental yield?', time: '10:05', type: 'text' },
+      { id: 'm4', from: 'agent', text: 'Emirates Hills typically yields 5–7% gross annually. I can share a full ROI report.', time: '10:08', type: 'text' },
+      { id: 'm5', from: 'lead', text: 'Please do. Can we schedule a virtual tour this week?', time: '10:30', type: 'text' },
+    ]
+  },
+  {
+    id: 'c8', leadId: 'l2', leadName: 'Priya Sharma', channel: 'whatsapp',
+    lastMessage: 'Saturday 11 AM works perfectly, thank you!', time: '15:10', unread: 0,
+    status: 'active', agentId: 'a3', agentName: 'Fatima Zahra',
+    messages: [
+      { id: 'm1', from: 'lead', text: 'Hi Fatima, I was referred to you for JVC 2BR listings.', time: '14:30', type: 'text' },
+      { id: 'm2', from: 'agent', text: 'Hi Priya! Wonderful, I have 3 great options in JVC under 1.2M. Let me share details.', time: '14:32', type: 'text' },
+      { id: 'm3', from: 'agent', text: '', time: '14:33', type: 'document', fileName: 'JVC_2BR_Options.pdf', fileSize: '1.8 MB' },
+      { id: 'm4', from: 'lead', text: 'These look great! Can I visit one this weekend?', time: '15:00', type: 'text' },
+      { id: 'm5', from: 'agent', text: 'Absolutely! Saturday 11 AM at the JVC show unit — I will send you the address.', time: '15:08', type: 'text' },
+      { id: 'm6', from: 'lead', text: 'Saturday 11 AM works perfectly, thank you!', time: '15:10', type: 'text' },
+    ]
+  },
+  {
+    id: 'c9', leadId: 'l7', leadName: 'Carlos Mendez', channel: 'whatsapp',
+    lastMessage: 'Looking forward to the site visit on Saturday!', time: '08:55', unread: 0,
+    status: 'active', agentId: 'a5', agentName: 'Nour Al Rashid',
+    messages: [
+      { id: 'm1', from: 'lead', text: 'Hello, I want to know more about the Meydan 4BR project.', time: '08:00', type: 'text' },
+      { id: 'm2', from: 'agent', text: 'Hi Carlos! The Meydan 4BR is priced at AED 2M with a 20/80 payment plan. Very competitive for the area.', time: '08:05', type: 'text' },
+      { id: 'm3', from: 'lead', text: 'What is the handover timeline?', time: '08:20', type: 'text' },
+      { id: 'm4', from: 'agent', text: 'Expected Q2 2027. The project is 45% complete. Shall I book a site visit?', time: '08:30', type: 'text' },
+      { id: 'm5', from: 'lead', text: 'Yes please — this Saturday if possible.', time: '08:50', type: 'text' },
+      { id: 'm6', from: 'agent', text: 'Done! Saturday 10 AM at Meydan Avenue Gate 3. See you then!', time: '08:53', type: 'text' },
+      { id: 'm7', from: 'lead', text: 'Looking forward to the site visit on Saturday!', time: '08:55', type: 'text' },
+    ]
+  },
+  {
+    id: 'c10', leadId: 'l5', leadName: 'Raj Patel', channel: 'whatsapp',
+    lastMessage: 'Send me the payment schedule please.', time: '16:45', unread: 2,
+    status: 'active', agentId: 'a6', agentName: 'Hassan Mahmoud',
+    messages: [
+      { id: 'm1', from: 'lead', text: 'Hi, I am looking at the Business Bay 3BR listing.', time: '16:00', type: 'text' },
+      { id: 'm2', from: 'agent', text: 'Hi Raj! Yes, AED 1.8M for a stunning city-view 3BR. Flexible payment options available.', time: '16:05', type: 'text' },
+      { id: 'm3', from: 'lead', text: 'Is there a post-handover plan?', time: '16:20', type: 'text' },
+      { id: 'm4', from: 'agent', text: 'Yes! 20/80 with 60% post-handover over 2 years. Very investor-friendly.', time: '16:25', type: 'text' },
+      { id: 'm5', from: 'lead', text: 'Interesting. Send me the payment schedule please.', time: '16:45', type: 'text' },
+    ]
+  },
+  {
+    id: 'c11', leadId: 'l1', leadName: 'Mohammed Al Zayed', channel: 'whatsapp',
+    lastMessage: 'Can Sara call me tomorrow at 10?', time: '13:40', unread: 1,
+    status: 'active', agentId: 'a1', agentName: 'Sara Khalid',
+    messages: [
+      { id: 'm1', from: 'lead', text: 'Sara, I reviewed the brochure you sent. Very impressed!', time: '13:00', type: 'text' },
+      { id: 'm2', from: 'agent', text: 'That is wonderful Mohammed! The 18th floor unit with the Burj view is truly special.', time: '13:05', type: 'text' },
+      { id: 'm3', from: 'lead', text: 'I want to move forward. What is the next step?', time: '13:20', type: 'text' },
+      { id: 'm4', from: 'agent', text: 'Next step is a reservation form and AED 50K token payment to secure the unit. Shall I prepare the paperwork?', time: '13:30', type: 'text' },
+      { id: 'm5', from: 'lead', text: 'Can Sara call me tomorrow at 10?', time: '13:40', type: 'text' },
+    ]
+  },
 ];
 
 export const callLogs = [
-  { id: 'cl1', lead: 'Mohammed Al Zayed', phone: '+971556789012', agent: 'Sara Khalid', direction: 'inbound',  duration: '8m 45s', time: '2026-05-14 09:15', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '101' },
-  { id: 'cl2', lead: 'Li Wei',            phone: '+971558765432', agent: 'Omar Farooq', direction: 'inbound',  duration: '14m 32s',time: '2026-05-14 11:15', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '102' },
-  { id: 'cl3', lead: 'James Thornton',    phone: '+971559876543', agent: 'Fatima Zahra',direction: 'outbound', duration: 'No answer',time: '2026-05-14 11:00',status: 'missed',    hasRecording: false, hasTranscript: false, ext: '103' },
-  { id: 'cl4', lead: 'Raj Patel',         phone: '+971557654321', agent: 'Hassan Mahmoud',direction:'inbound', duration: '5m 12s', time: '2026-05-13 16:20', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '106' },
-  { id: 'cl5', lead: 'Aisha Karimi',      phone: '+971552468135', agent: 'Sara Khalid', direction: 'outbound', duration: '12m 08s',time: '2026-05-13 10:30', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '101' },
-  { id: 'cl6', lead: 'Priya Sharma',      phone: '+971554321098', agent: 'Omar Farooq', direction: 'outbound', duration: 'Voicemail',time: '2026-05-13 09:00',status: 'voicemail', hasRecording: true,  hasTranscript: false, ext: '102' },
-  { id: 'cl7', lead: 'Carlos Mendez',     phone: '+971551234567', agent: 'Nour Al Rashid',direction:'inbound', duration: '3m 58s', time: '2026-05-12 13:15', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '105' },
-  { id: 'cl8', lead: 'Elena Petrov',      phone: '+971553456789', agent: 'Fatima Zahra',direction: 'outbound', duration: '9m 20s', time: '2026-05-12 11:45', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '103' },
+  { id: 'cl1', lead: 'Mohammed Al Zayed', phone: '+971556789012', agent: 'Sara Khalid',     direction: 'inbound',  duration: '8m 45s',   time: '2026-05-14 09:15', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '101', aiHandled: false },
+  { id: 'cl2', lead: 'Li Wei',            phone: '+971558765432', agent: 'Omar Farooq',     direction: 'inbound',  duration: '14m 32s',  time: '2026-05-14 11:15', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '102', aiHandled: true  },
+  { id: 'cl3', lead: 'James Thornton',    phone: '+971559876543', agent: 'Fatima Zahra',    direction: 'outbound', duration: 'No answer', time: '2026-05-14 11:00', status: 'missed',    hasRecording: false, hasTranscript: false, ext: '103', aiHandled: false },
+  { id: 'cl4', lead: 'Raj Patel',         phone: '+971557654321', agent: 'Hassan Mahmoud',  direction: 'inbound',  duration: '5m 12s',   time: '2026-05-13 16:20', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '106', aiHandled: true  },
+  { id: 'cl5', lead: 'Aisha Karimi',      phone: '+971552468135', agent: 'Sara Khalid',     direction: 'outbound', duration: '12m 08s',  time: '2026-05-13 10:30', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '101', aiHandled: false },
+  { id: 'cl6', lead: 'Priya Sharma',      phone: '+971554321098', agent: 'Omar Farooq',     direction: 'outbound', duration: 'Voicemail', time: '2026-05-13 09:00', status: 'voicemail', hasRecording: true,  hasTranscript: false, ext: '102', aiHandled: true  },
+  { id: 'cl7', lead: 'Carlos Mendez',     phone: '+971551234567', agent: 'Nour Al Rashid',  direction: 'inbound',  duration: '3m 58s',   time: '2026-05-12 13:15', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '105', aiHandled: false },
+  { id: 'cl8', lead: 'Elena Petrov',      phone: '+971553456789', agent: 'Fatima Zahra',    direction: 'outbound', duration: '9m 20s',   time: '2026-05-12 11:45', status: 'answered',  hasRecording: true,  hasTranscript: true,  ext: '103', aiHandled: true  },
 ];
 
 export const sampleTranscript = [
@@ -258,13 +321,121 @@ export const aiSessionStats = {
 };
 
 export const aiRecentSessions = [
-  { id: 'as1', lead: 'Aisha Karimi',      channel: 'whatsapp', start: '10:10', end: '10:46', messages: 5, outcome: 'handoff',  ragSources: ['kb3', 'kb5'], summary: 'Palm Villa inquiry — service charge question escalated to human.' },
-  { id: 'as2', lead: 'New Lead',           channel: 'whatsapp', start: '09:50', end: '10:02', messages: 4, outcome: 'resolved', ragSources: ['kb1'],         summary: 'General Downtown 3BR availability — brochure sent via RAG.' },
-  { id: 'as3', lead: 'Mohammed Al Zayed', channel: 'sms',      start: '09:15', end: '09:28', messages: 6, outcome: 'handoff',  ragSources: ['kb1', 'kb6', 'kb5'], summary: 'Budget AED 2.5M confirmed — booked Sara for follow-up.' },
-  { id: 'as4', lead: 'Anonymous',          channel: 'whatsapp', start: '08:45', end: '08:51', messages: 3, outcome: 'resolved', ragSources: ['kb5'],         summary: 'Office hours question — FAQ resolved instantly.' },
-  { id: 'as5', lead: 'Carlos Mendez',      channel: 'sms',      start: '08:30', end: '08:52', messages: 7, outcome: 'handoff',  ragSources: ['kb5', 'kb6'], summary: 'Meydan 4BR inquiry — site visit request escalated to human.' },
-  { id: 'as6', lead: 'New Lead',           channel: 'whatsapp', start: '07:55', end: '08:03', messages: 4, outcome: 'resolved', ragSources: ['kb6'],         summary: 'Payment plan structure explained — 40/60 plan details provided.' },
-  { id: 'as7', lead: 'Unknown',            channel: 'sms',      start: '07:30', end: '07:33', messages: 2, outcome: 'resolved', ragSources: ['kb5'],         summary: 'Foreign ownership eligibility question — answered from FAQ.' },
+  {
+    id: 'as1', lead: 'Aisha Karimi', channel: 'whatsapp', date: '2026-05-14',
+    start: '10:10', end: '10:46', messages: 5, outcome: 'handoff', ragSources: ['kb3', 'kb5'],
+    summary: 'Palm Villa inquiry — service charge question escalated to human.',
+    chatLog: [
+      { speaker: 'Lead', text: 'Hi, I am interested in the Palm Villa 5BR. Can you tell me about the annual service charge?', time: '10:10' },
+      { speaker: 'AI',   text: 'Hello! The Palm Villa 5BR is priced at AED 5M with a private pool and premium finishes. Could you share your purchase timeline?', time: '10:12' },
+      { speaker: 'Lead', text: 'ASAP. What is the exact annual service charge figure?', time: '10:15' },
+      { speaker: 'AI',   text: 'I have full specs and payment plans available, however the exact service charge figure is not in my knowledge base right now. I will connect you with a specialist who can provide this immediately.', time: '10:44' },
+      { speaker: 'Lead', text: 'Okay, please do.', time: '10:46' },
+    ],
+  },
+  {
+    id: 'as2', lead: 'New Lead', channel: 'whatsapp', date: '2026-05-14',
+    start: '09:50', end: '10:02', messages: 4, outcome: 'resolved', ragSources: ['kb1'],
+    summary: 'General Downtown 3BR availability — brochure sent via RAG.',
+    chatLog: [
+      { speaker: 'Lead', text: 'Hello, do you have any 3BR units available in Downtown Dubai?', time: '09:50' },
+      { speaker: 'AI',   text: 'Yes! We have two 3BR units available — 14th floor at AED 2.2M and 18th floor with Burj Khalifa view at AED 2.45M. Shall I send the brochure?', time: '09:52' },
+      { speaker: 'Lead', text: 'Yes, please send the brochure for the 18th floor unit.', time: '09:58' },
+      { speaker: 'AI',   text: 'Brochure sent! It includes floor plans, 40/60 payment plan, and Q4 2027 handover date. Anything else you would like to know?', time: '10:02' },
+    ],
+  },
+  {
+    id: 'as3', lead: 'Mohammed Al Zayed', channel: 'call', date: '2026-05-14',
+    start: '09:15', end: '09:28', messages: 6, outcome: 'handoff', ragSources: ['kb1', 'kb6', 'kb5'],
+    summary: 'Budget AED 2.5M confirmed — booked Sara for follow-up.',
+    chatLog: [
+      { speaker: 'Lead', text: 'Hi, I am calling about your Downtown listings.', time: '09:15' },
+      { speaker: 'AI',   text: 'Good morning! Thank you for calling Al Khail Real Estate. I am the AI assistant. How can I help you today?', time: '09:15' },
+      { speaker: 'Lead', text: 'I want to know about 3BR units. My budget is around AED 2.5 million.', time: '09:18' },
+      { speaker: 'AI',   text: 'Excellent! At AED 2.5M you have great options in Downtown — we have a 3BR on the 18th floor at AED 2.45M with 40/60 plan and Q4 2027 handover. Shall I book you with our specialist Sara Khalid?', time: '09:20' },
+      { speaker: 'Lead', text: 'Yes, please connect me with Sara.', time: '09:25' },
+      { speaker: 'AI',   text: 'Sara will call you back within the hour. Your reference is MOH-001. Thank you Mohammed!', time: '09:28' },
+    ],
+  },
+  {
+    id: 'as4', lead: 'Anonymous', channel: 'whatsapp', date: '2026-05-14',
+    start: '08:45', end: '08:51', messages: 3, outcome: 'resolved', ragSources: ['kb5'],
+    summary: 'Office hours question — FAQ resolved instantly.',
+    chatLog: [
+      { speaker: 'Lead', text: 'What are your office hours?', time: '08:45' },
+      { speaker: 'AI',   text: 'Our office is open Sunday–Thursday 9:00 AM–6:00 PM and Saturday 10:00 AM–2:00 PM GST. Closed Fridays. You can reach us 24/7 via WhatsApp for property inquiries!', time: '08:46' },
+      { speaker: 'Lead', text: 'Thank you!', time: '08:51' },
+    ],
+  },
+  {
+    id: 'as5', lead: 'Carlos Mendez', channel: 'call', date: '2026-05-14',
+    start: '08:30', end: '08:52', messages: 7, outcome: 'handoff', ragSources: ['kb5', 'kb6'],
+    summary: 'Meydan 4BR inquiry — site visit request escalated to human.',
+    chatLog: [
+      { speaker: 'Lead', text: 'Good morning. I am interested in a 4BR in Meydan.', time: '08:30' },
+      { speaker: 'AI',   text: 'Good morning! We have an excellent 4BR villa in Meydan at AED 2M — private garden, close to the racetrack. Would you like full specs?', time: '08:32' },
+      { speaker: 'Lead', text: 'Yes, and can I schedule a site visit this week?', time: '08:40' },
+      { speaker: 'AI',   text: 'I can share all property details now. For scheduling on-site visits, I will need to connect you with an agent who handles viewings directly.', time: '08:45' },
+      { speaker: 'Lead', text: 'I need to visit before end of week.', time: '08:48' },
+      { speaker: 'AI',   text: 'Understood — escalating to our team now. An agent will call you within 30 minutes to confirm your viewing slot.', time: '08:50' },
+      { speaker: 'Lead', text: 'Perfect, thank you.', time: '08:52' },
+    ],
+  },
+  {
+    id: 'as6', lead: 'New Lead', channel: 'whatsapp', date: '2026-05-14',
+    start: '07:55', end: '08:03', messages: 4, outcome: 'resolved', ragSources: ['kb6'],
+    summary: 'Payment plan structure explained — 40/60 plan details provided.',
+    chatLog: [
+      { speaker: 'Lead', text: 'What payment plans do you offer?', time: '07:55' },
+      { speaker: 'AI',   text: 'We offer flexible developer plans! Most popular is the 40/60 plan — 40% during construction, 60% on handover. Some projects offer 20/80. Which project are you interested in?', time: '07:57' },
+      { speaker: 'Lead', text: 'The Business Bay 3BR.', time: '08:00' },
+      { speaker: 'AI',   text: 'Business Bay 3BR at AED 1.8M has a 20/80 plan — AED 360K on booking, AED 1.44M on handover Q3 2027. DLD fees: 4% = AED 72,000. Shall I send the full breakdown?', time: '08:03' },
+    ],
+  },
+  {
+    id: 'as7', lead: 'Unknown', channel: 'sms', date: '2026-05-14',
+    start: '07:30', end: '07:33', messages: 2, outcome: 'resolved', ragSources: ['kb5'],
+    summary: 'Foreign ownership eligibility question — answered from FAQ.',
+    chatLog: [
+      { speaker: 'Lead', text: 'Can foreigners buy property in Dubai?', time: '07:30' },
+      { speaker: 'AI',   text: 'Yes! Dubai allows 100% foreign ownership in designated freehold areas including Downtown Dubai, Business Bay, Dubai Marina, JVC and more. No nationality restrictions. DLD registration fees apply (4%). Interested in available properties?', time: '07:33' },
+    ],
+  },
+  {
+    id: 'as8', lead: 'Raj Patel', channel: 'sms', date: '2026-05-13',
+    start: '16:00', end: '16:18', messages: 4, outcome: 'resolved', ragSources: ['kb6'],
+    summary: 'Business Bay payment schedule requested — full breakdown sent via SMS.',
+    chatLog: [
+      { speaker: 'Lead', text: 'Hi can you tell me the DLD fees for Business Bay 3BR?', time: '16:00' },
+      { speaker: 'AI',   text: 'Hi Raj! DLD fees for the Business Bay 3BR at AED 1.8M are 4% = AED 72,000. One-time government registration fee paid on transfer.', time: '16:03' },
+      { speaker: 'Lead', text: 'What about the payment plan?', time: '16:10' },
+      { speaker: 'AI',   text: '20/80 plan: AED 360,000 on booking (20%), then AED 1,440,000 on handover Q3 2027 (80%). No instalments during construction — very investor-friendly!', time: '16:18' },
+    ],
+  },
+  {
+    id: 'as9', lead: 'Li Wei', channel: 'whatsapp', date: '2026-05-13',
+    start: '14:00', end: '14:22', messages: 5, outcome: 'handoff', ragSources: ['kb3', 'kb5'],
+    summary: 'Emirates Hills villa investment inquiry — ROI query escalated to agent.',
+    chatLog: [
+      { speaker: 'Lead', text: 'Hello, I am interested in the Emirates Hills villa at AED 7M as an investment. What is the rental yield?', time: '14:00' },
+      { speaker: 'AI',   text: 'Good afternoon! Emirates Hills delivers 5–7% gross rental yield annually — among the highest in Dubai. 6BR villa, private pool, golf course views. Shall I send the investment report?', time: '14:03' },
+      { speaker: 'Lead', text: 'Yes please. Also who should I speak to for detailed ROI projections?', time: '14:08' },
+      { speaker: 'AI',   text: 'Sending the report now. For detailed projections I will connect you with Omar Farooq, our senior investment specialist.', time: '14:15' },
+      { speaker: 'Lead', text: 'Great, thank you.', time: '14:22' },
+    ],
+  },
+  {
+    id: 'as10', lead: 'Elena Petrov', channel: 'call', date: '2026-05-13',
+    start: '09:00', end: '09:12', messages: 4, outcome: 'resolved', ragSources: ['kb1'],
+    summary: 'DIFC penthouse call — payment plan and specifications provided from RAG.',
+    chatLog: [
+      { speaker: 'Lead', text: 'Hi, I am calling about the DIFC penthouse.', time: '09:00' },
+      { speaker: 'AI',   text: 'Good morning! Our DIFC Penthouse is a 4BR on the 42nd floor at AED 8.2M — panoramic city views. What would you like to know?', time: '09:01' },
+      { speaker: 'Lead', text: 'What are the finish specifications?', time: '09:05' },
+      { speaker: 'AI',   text: 'Italian marble flooring, Gaggenau appliances, smart home automation, and floor-to-ceiling glazing. Handover Q2 2027 with a 30/70 developer plan. I can email you the full spec sheet — what is your address?', time: '09:10' },
+      { speaker: 'Lead', text: 'e.petrov@eu.com. Thank you!', time: '09:12' },
+    ],
+  },
 ];
 
 export const aiHandoffQueue = [
@@ -291,6 +462,63 @@ export const aiHandoffQueue = [
     suggestedAgent: 'a5',
   },
 ];
+
+export const emailAccounts = [
+  { id: 'ea1', label: 'info@alkhailre.ae',    provider: 'Gmail',   status: 'connected', unread: 12, total: 184, lastSync: '1 min ago'  },
+  { id: 'ea2', label: 'sales@alkhailre.ae',   provider: 'Outlook', status: 'connected', unread: 5,  total: 97,  lastSync: '3 min ago'  },
+  { id: 'ea3', label: 'support@alkhailre.ae', provider: 'Gmail',   status: 'connected', unread: 3,  total: 61,  lastSync: 'Just now'   },
+  { id: 'ea4', label: 'noreply@alkhailre.ae', provider: 'SMTP',    status: 'send-only', unread: 0,  total: 0,   lastSync: '10 min ago' },
+]
+
+export const emailThreads = [
+  {
+    id: 'et1', leadName: 'Elena Petrov', leadPhoto: 'https://randomuser.me/api/portraits/women/79.jpg',
+    email: 'e.petrov@eu.com', account: 'sales@alkhailre.ae', agentName: 'Fatima Zahra',
+    subject: 'DIFC Penthouse Inquiry', time: '08:15', unread: 1, starred: true,
+    messages: [
+      { id: 'em1', from: 'lead', fromName: 'Elena Petrov', time: '2026-05-13 09:00', subject: 'DIFC Penthouse Inquiry', body: 'Dear Team,\n\nI am interested in DIFC penthouses. Please send details on available units, pricing, and payment plans.\n\nBest regards,\nElena Petrov' },
+      { id: 'em2', from: 'agent', fromName: 'Fatima Zahra', time: '2026-05-13 10:30', subject: 'Re: DIFC Penthouse Inquiry', body: 'Dear Elena,\n\nThank you for your interest in our DIFC penthouses. I am attaching our latest penthouse brochure which includes pricing for our 4BR unit at AED 8.2M on the 42nd floor with panoramic city views.\n\nBest regards,\nFatima Zahra\nAl Khail Real Estate' },
+      { id: 'em3', from: 'lead', fromName: 'Elena Petrov', time: '2026-05-14 08:15', subject: 'Re: DIFC Penthouse Inquiry', body: 'Dear Fatima,\n\nThank you for the brochure. I have a few questions about the payment plan and the finish specifications. Could we schedule a call this week?\n\nBest,\nElena' },
+    ],
+  },
+  {
+    id: 'et2', leadName: 'James Thornton', leadPhoto: 'https://randomuser.me/api/portraits/men/22.jpg',
+    email: 'j.thornton@corp.ae', account: 'info@alkhailre.ae', agentName: 'Fatima Zahra',
+    subject: 'Dubai Marina 1BR — Availability Check', time: '11:42', unread: 2, starred: false,
+    messages: [
+      { id: 'em1', from: 'lead', fromName: 'James Thornton', time: '2026-05-14 11:00', subject: 'Dubai Marina 1BR — Availability Check', body: 'Hello,\n\nI came across your listing for a 1BR in Dubai Marina at AED 800K. Is this still available? What is included in the service charge?\n\nRegards,\nJames Thornton' },
+      { id: 'em2', from: 'lead', fromName: 'James Thornton', time: '2026-05-14 11:42', subject: 'Dubai Marina 1BR — Availability Check', body: 'Just following up on my email below. Please do let me know as I have a few other properties I am comparing.\n\nJames' },
+    ],
+  },
+  {
+    id: 'et3', leadName: 'Li Wei', leadPhoto: 'https://randomuser.me/api/portraits/women/9.jpg',
+    email: 'l.wei@sino.hk', account: 'sales@alkhailre.ae', agentName: 'Omar Farooq',
+    subject: 'Emirates Hills Villa — Investment Enquiry', time: '09:05', unread: 0, starred: true,
+    messages: [
+      { id: 'em1', from: 'lead', fromName: 'Li Wei', time: '2026-05-13 14:00', subject: 'Emirates Hills Villa — Investment Enquiry', body: 'Good afternoon,\n\nI am a property investor based in Hong Kong. I am looking at the Emirates Hills villa listed at AED 7M. Can you share the ROI projections and rental yield history for this area?\n\nBest,\nLi Wei' },
+      { id: 'em2', from: 'agent', fromName: 'Omar Farooq', time: '2026-05-13 15:30', subject: 'Re: Emirates Hills Villa — Investment Enquiry', body: 'Dear Li Wei,\n\nThank you for reaching out. Emirates Hills consistently delivers 5–7% gross rental yield. I have attached a full investment report and the villa title deed summary for your review.\n\nWarm regards,\nOmar Farooq\nAl Khail Real Estate' },
+      { id: 'em3', from: 'lead', fromName: 'Li Wei', time: '2026-05-14 09:05', subject: 'Re: Emirates Hills Villa — Investment Enquiry', body: 'Thank you Omar. The report looks very promising. Can you arrange a virtual tour? I will be visiting Dubai in June and would like to schedule a physical viewing too.\n\nBest,\nLi Wei' },
+    ],
+  },
+  {
+    id: 'et4', leadName: 'Raj Patel', leadPhoto: 'https://randomuser.me/api/portraits/men/55.jpg',
+    email: 'raj.p@biz.com', account: 'info@alkhailre.ae', agentName: 'Hassan Mahmoud',
+    subject: 'Business Bay 3BR — Payment Plan Query', time: 'Yesterday', unread: 0, starred: false,
+    messages: [
+      { id: 'em1', from: 'lead', fromName: 'Raj Patel', time: '2026-05-13 16:00', subject: 'Business Bay 3BR — Payment Plan Query', body: 'Hi,\n\nI spoke with Hassan earlier today regarding the Business Bay 3BR. He mentioned a 20/80 plan. Could you please email me the full payment schedule and DLD fee breakdown?\n\nThanks,\nRaj' },
+      { id: 'em2', from: 'agent', fromName: 'Hassan Mahmoud', time: '2026-05-13 16:45', subject: 'Re: Business Bay 3BR — Payment Plan Query', body: 'Hi Raj,\n\nPlease find attached the full payment schedule:\n- 20% on booking\n- 60% during construction (quarterly)\n- 20% on handover (Q3 2027)\n- DLD fee: 4% of AED 1.8M = AED 72,000\n\nLet me know if you need anything else!\n\nHassan Mahmoud' },
+    ],
+  },
+  {
+    id: 'et5', leadName: 'Carlos Mendez', leadPhoto: 'https://randomuser.me/api/portraits/men/64.jpg',
+    email: 'carlos@global.io', account: 'sales@alkhailre.ae', agentName: 'Nour Al Rashid',
+    subject: 'Meydan 4BR — Site Visit Request', time: 'Yesterday', unread: 0, starred: false,
+    messages: [
+      { id: 'em1', from: 'lead', fromName: 'Carlos Mendez', time: '2026-05-13 09:20', subject: 'Meydan 4BR — Site Visit Request', body: 'Hello,\n\nFollowing up on our WhatsApp conversation. I would like to schedule a site visit to the Meydan 4BR this weekend if possible.\n\nCarlos Mendez' },
+      { id: 'em2', from: 'agent', fromName: 'Nour Al Rashid', time: '2026-05-13 10:00', subject: 'Re: Meydan 4BR — Site Visit Request', body: 'Hi Carlos,\n\nAbsolutely! Saturday 17 May at 11:00 AM works perfectly. Our site office is located at Meydan Avenue, Gate 3. I will send you a calendar invite now.\n\nSee you then!\nNour Al Rashid' },
+    ],
+  },
+]
 
 export const sampleRagResponse = {
   query: 'What is the payment plan for Downtown Dubai 3BR?',

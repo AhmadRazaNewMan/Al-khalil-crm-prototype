@@ -86,7 +86,7 @@ export default function LoginPage({ onLogin }) {
       }}>
         <div style={{
           width: 28, height: 28, borderRadius: 8,
-          background: 'linear-gradient(135deg,#7670C5,#D18EE2)',
+          background: 'linear-gradient(135deg,#C8A75B,#DDB96A)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 11, fontWeight: 700, color: '#fff',
         }}>AK</div>
@@ -105,17 +105,17 @@ export default function LoginPage({ onLogin }) {
 
       {/* Soft blobs on top of global ambient (low opacity so art + grain stay primary) */}
       <div style={{ position: 'fixed', bottom: -60, left: -40, zIndex: 1, opacity: 0.45, pointerEvents: 'none' }}>
-        <Blob size="260px" color1="#c0a5e8" color2="#7670C5" delay={0}
+        <Blob size="260px" color1="#3A6F9F" color2="#1E3A5F" delay={0}
           style={{ bottom: 60, left: 40 }} />
         <Blob size="180px" color1="#FF9B82" color2="#FF7759" delay={1.5}
           style={{ bottom: 0, left: 160, position: 'absolute' }} />
-        <Blob size="130px" color1="#a8c8e8" color2="#4C6EE6" delay={2.5}
+        <Blob size="130px" color1="#8AABB8" color2="#1E3A5F" delay={2.5}
           style={{ bottom: 160, left: 10, position: 'absolute' }} />
       </div>
       <div style={{ position: 'fixed', top: -30, right: -20, zIndex: 1, opacity: 0.4, pointerEvents: 'none' }}>
         <Blob size="220px" color1="#FF9B82" color2="#E8634A" delay={0.8}
           style={{ top: 0, right: 0 }} />
-        <Blob size="140px" color1="#c0a5e8" color2="#9B8FE0" delay={2}
+        <Blob size="140px" color1="#D4C48A" color2="#C8A75B" delay={2}
           style={{ top: 180, right: 10, position: 'absolute' }} />
       </div>
 
@@ -204,7 +204,7 @@ export default function LoginPage({ onLogin }) {
           {/* Submit — primary brand CTA */}
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.015, boxShadow: '0 12px 30px rgba(108,92,224,0.4)' }}
+            whileHover={{ scale: 1.015, boxShadow: '0 12px 30px rgba(200,167,91,0.4)' }}
             whileTap={{ scale: 0.985 }}
             disabled={loading}
             style={{

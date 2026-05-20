@@ -8,6 +8,7 @@ import UnifiedInbox from './components/inbox/UnifiedInbox'
 import CallLogs from './components/calls/CallLogs'
 import WhatsAppModule from './components/whatsapp/WhatsAppModule'
 import SMSModule from './components/sms/SMSModule'
+import EmailModule from './components/email/EmailModule'
 import LeadsPage from './components/leads/LeadsPage'
 import SettingsPage from './components/settings/SettingsPage'
 import AIAgentPage from './components/ai/AIAgentPage'
@@ -34,10 +35,11 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/inbox" element={<UnifiedInbox />} />
-              <Route path="/calls" element={<CallLogs />} />
-              <Route path="/whatsapp" element={<WhatsAppModule />} />
-              <Route path="/sms" element={<SMSModule />} />
+              <Route path="/inbox" element={<UnifiedInbox role={role} />} />
+              <Route path="/calls" element={<CallLogs role={role} />} />
+              <Route path="/whatsapp" element={<WhatsAppModule role={role} />} />
+              <Route path="/sms" element={<SMSModule role={role} />} />
+              <Route path="/email" element={<EmailModule role={role} />} />
               <Route path="/leads" element={<LeadsPage />} />
               <Route
                 path="/settings"
